@@ -12,8 +12,8 @@
 .screen{position:absolute;inset:0;display:grid;place-items:center;background:#151320eF;padding:15px;overflow:auto}.panel{width:min(570px,100%);background:#2c273d;border:3px solid #8a7180;box-shadow:7px 7px #100e18;padding:clamp(16px,4vw,27px);text-align:center}.panel h2{color:var(--gold);margin:0 0 12px;font-size:clamp(19px,3vw,27px)}.panel p{line-height:1.55;color:#e1d6c5;font-size:13px}.field{display:grid;gap:7px;text-align:left;margin:14px 0}.field label{font-size:12px;color:var(--gold)}input[type=text]{width:100%;background:#181622;border:2px solid #77627f;color:white;padding:12px;font:inherit;border-radius:4px}.gender{display:flex;gap:10px}.gender label{flex:1;border:2px solid #6d5b78;background:#211e30;padding:11px;border-radius:4px;text-align:center;cursor:pointer;color:#eee}.gender input{accent-color:#e4b65e}.gender label:has(input:checked){border-color:var(--gold);background:#40364b}.btn{border:0;background:var(--gold);color:#211b2b;font: bold 14px ui-monospace,monospace;padding:13px 18px;cursor:pointer;border-radius:4px;box-shadow:0 4px #a47746;margin-top:10px}.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.btn:active{transform:translateY(2px);box-shadow:0 2px #a47746}.small{font-size:10px;color:var(--muted);line-height:1.5}
 #battleUI{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(9px,2vw,18px)}
 .bossinfo{align-self:center;width:min(390px,78%);text-align:center;text-shadow:2px 2px #17121d}.bossname{font-size:clamp(13px,2.2vw,19px);color:#ffe1a0;font-weight:bold;letter-spacing:1px}.bosstitle{font-size:10px;color:#ead7c0;margin:3px 0 7px}.bar{height:13px;background:#241c28;border:2px solid #d6b77b;padding:1px}.fill{height:100%;background:linear-gradient(90deg,#b63e48,#e66a56);width:100%;transition:width .2s}
-.playerinfo{display:flex;justify-content:space-between;align-items:end;font-size:11px;text-shadow:2px 2px #17121d}.hearts{color:#ff8277;letter-spacing:3px;font-size:17px}.timerwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(260px,42%);background:#211d2acc;border:2px solid #e3c47d;padding:5px;opacity:.96}.timerlabel{text-align:center;font-size:10px;color:#ffe4a5;margin-bottom:3px}.timerbar{height:9px;background:#4c2935}.timerfill{height:100%;width:100%;background:#e8c66d;transition:width .12s linear}
-#question{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(700px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:rgba(34,31,47,.94);border:3px solid #e2c078;box-shadow:5px 5px #202033;padding:clamp(10px,2vw,18px);pointer-events:auto;backdrop-filter:blur(3px)}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.6vw,21px);line-height:1.5;margin:0 0 15px}.answers{display:grid;gap:8px}.answers button{background:#211e30;border:2px solid #75627c;color:#f6ead2;padding:12px;text-align:left;font:12px ui-monospace,monospace;cursor:pointer;border-radius:3px}.answers button:hover:not(:disabled){background:#4a3b56;border-color:var(--gold)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:35px;color:var(--gold);font-size:11px;line-height:1.5;margin-top:12px}
+.playerinfo{display:flex;justify-content:space-between;align-items:end;font-size:11px;text-shadow:2px 2px #17121d}.playerinfo>div:first-child{background:linear-gradient(135deg,rgba(35,58,70,.96),rgba(24,42,51,.96));border:3px solid #e5c783;box-shadow:4px 4px 0 #273b43;padding:9px 15px;min-width:170px}.hero-rank{font-size:9px;color:#f4d98e;letter-spacing:1px}.hero-name{font-size:clamp(16px,2.6vw,23px);font-weight:1000;color:#fff4d2;letter-spacing:1px;margin:3px 0}.hearts{color:#ff8277;letter-spacing:3px;font-size:17px}.timerwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(260px,42%);background:#211d2acc;border:2px solid #e3c47d;padding:5px;opacity:.96}.timerlabel{text-align:center;font-size:10px;color:#ffe4a5;margin-bottom:3px}.timerbar{height:9px;background:#4c2935}.timerfill{height:100%;width:100%;background:#e8c66d;transition:width .12s linear}
+#question{position:absolute;left:50%;bottom:clamp(8px,2vw,18px);transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:transparent;border:0;box-shadow:none;padding:0 8px;pointer-events:none;text-align:center;text-shadow:3px 3px 2px #243747,-1px -1px 1px #243747}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.8vw,23px);line-height:1.35;margin:0 auto 9px;color:#fff8e7;max-width:700px}.answers{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:auto}.answers button{background:linear-gradient(#f4dfae,#d7b77d);border:3px solid #77543a;border-bottom-width:5px;color:#3c3028;padding:9px 13px;text-align:center;font:bold 12px ui-monospace,monospace;cursor:pointer;border-radius:3px;min-width:110px;box-shadow:2px 3px 0 #253c47}.answers button:hover:not(:disabled){background:#4a3b56;border-color:var(--gold)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:24px;color:#fff0bd;font-size:11px;line-height:1.4;margin-top:5px}
 #result{display:none;position:absolute;inset:0;z-index:6;background:#151320ed;place-items:center;padding:14px}.resultpanel{width:min(520px,100%);background:#302941;border:3px solid var(--gold);padding:24px;text-align:center;box-shadow:7px 7px #100e18}.resultpanel h2{color:var(--gold)}.resultpanel p{font-size:13px;line-height:1.6}
 @media(max-width:600px){body{padding:8px}.hud{width:100%}.chip{font-size:10px;padding:6px}.timerwrap{top:55%;width:38%}.playerinfo{font-size:9px}.hearts{font-size:14px}}
 </style>
@@ -21,11 +21,11 @@
 <body><main class="app">
 <header><div><h1>CRÔNICAS DA CRASE</h1><div class="tag">A BATALHA DOS TRÊS CHEFES • RPG MEDIEVAL 8-BIT</div></div><div class="hud"><div class="chip">⚔ Fase <b id="phase">1/3</b></div><div class="chip">♥ Vidas <b id="livesTop">3</b></div><div class="chip">✦ Acertos <b id="hitsTop">0</b></div></div></header>
 <div class="gameframe"><canvas id="scene" width="800" height="450"></canvas>
-<div id="battleUI" style="display:none"><div class="bossinfo"><div class="bossname" id="bossName">O Cavaleiro Sem Crase</div><div class="bosstitle" id="bossTitle">Guardião do Portão</div><div class="bar"><div class="fill" id="bossFill"></div></div><div class="small" id="bossHP">2 / 2 vidas</div></div><div class="timerwrap"><div class="timerlabel">TEMPO DA PERGUNTA: <b id="timerText">30</b>s</div><div class="timerbar"><div class="timerfill" id="timerFill"></div></div></div><div class="playerinfo"><div><div id="heroLabel">Cavaleiro</div><div class="hearts" id="hearts">♥ ♥ ♥</div></div><div>ARENA REAL<br><span class="small">Derrote os três guardiões</span></div></div></div>
+<div id="battleUI" style="display:none"><div class="bossinfo"><div class="bossname" id="bossName">O Cavaleiro Sem Crase</div><div class="bosstitle" id="bossTitle">Guardião do Portão</div><div class="bar"><div class="fill" id="bossFill"></div></div><div class="small" id="bossHP">2 / 2 vidas</div></div><div class="timerwrap"><div class="timerlabel">TEMPO DA PERGUNTA: <b id="timerText">30</b>s</div><div class="timerbar"><div class="timerfill" id="timerFill"></div></div></div><div class="playerinfo"><div><div class="hero-rank">✦ CAMPEÃO DO REINO ✦</div><div id="heroLabel" class="hero-name">Cavaleiro</div><div class="hearts" id="hearts">♥ ♥ ♥</div></div><div>ARENA REAL<br><span class="small">Derrote os três guardiões</span></div></div></div>
 <div class="screen" id="intro"><div class="panel"><h2>⚔ A LENDA DO ACENTO PERDIDO ⚔</h2><p>O reino de Gramática foi tomado por três guardiões que roubaram os sinais sagrados da escrita. Para restaurar a paz, você deverá vencê-los em duelos de conhecimento.</p><p><b>Acertou:</b> o chefe perde 1 vida. <b>Errou ou o tempo acabou:</b> você perde 1 vida. Você tem 3 vidas para vencer os três chefes.</p>
 <div class="field"><label for="heroName">NOME DO(A) CAVALEIRO(A)</label><input id="heroName" type="text" maxlength="16" placeholder="Digite seu nome..." value="Arthur"></div>
 <div class="field"><label>ESCOLHA SEU PERSONAGEM</label><div class="gender"><label><input type="radio" name="gender" value="male" checked> ⚔ Homem</label><label><input type="radio" name="gender" value="female"> 🛡 Mulher</label></div></div>
-<button class="btn" id="startBtn">INICIAR JORNADA</button><p class="small">Cada pergunta tem 30 segundos. A barra reinicia após cada resposta.</p></div></div>
+<button class="btn" id="startBtn">INICIAR JORNADA</button><p class="small">Cada pergunta tem 20 segundos. A barra reinicia após cada resposta.</p></div></div>
 <div id="question"><div class="qpanel"><div class="qtop"><span id="qBoss">DUELO 1</span><span>⏳ <b id="qTime">30</b>s</span></div><h3 id="qText"></h3><div class="answers" id="answerList"></div><div class="feedback" id="qFeedback"></div></div></div>
 <div id="result"><div class="resultpanel"><h2 id="resultTitle"></h2><p id="resultText"></p><button class="btn" id="againBtn">JOGAR NOVAMENTE</button></div></div>
 </div>
@@ -113,7 +113,7 @@ function drawBoss(x,y,index){const b=bosses[index],col=b.armor;
 }
 function drawScene(){
  // Bright 16-bit daytime kingdom: layered sky, clouds, distant mountains and detailed castle courtyard
- const sky=ctx.createLinearGradient(0,0,0,450);sky.addColorStop(0,'#67c8f2');sky.addColorStop(.58,'#b6e8e7');sky.addColorStop(1,'#f7d99a');ctx.fillStyle=sky;ctx.fillRect(0,0,800,450);
+ const sky=ctx.createLinearGradient(0,0,0,450);sky.addColorStop(0,'#55b9e9');sky.addColorStop(.48,'#9bd9e5');sky.addColorStop(1,'#f4d5a0');ctx.fillStyle=sky;ctx.fillRect(0,0,800,450);
  // sun
  rect(674,42,58,58,'#ffe58a');rect(684,32,38,78,'#ffe58a');rect(664,52,78,38,'#ffe58a');rect(682,50,42,42,'#fff2b5');
  // layered clouds
@@ -139,7 +139,7 @@ function drawScene(){
  // banners
  rect(330,200,7,52,'#795b3d');rect(337,205,27,30,'#b9434a');rect(436,200,7,52,'#795b3d');rect(443,205,27,30,'#416c9d');
  // foreground grass and stone arena
- rect(0,348,800,102,'#69a85c');rect(0,365,800,85,'#8fbd70');rect(0,386,800,64,'#b7a17a');
+ rect(0,348,800,102,'#69a75e');rect(0,365,800,85,'#8cbd70');rect(0,386,800,64,'#b9a17a');
  for(let x=0;x<800;x+=64){rect(x,386,58,4,'#d6c19a');rect(x+25,408,4,19,'#a58d6c');rect(x+8,436,25,3,'#9d8768')}
  // flowers and shrubs
  for(let i=0;i<24;i++){let x=(i*67+19)%790;rect(x,373+(i%3)*17,4,4,i%2?'#f6d66e':'#f4e9df');rect(x+3,378+(i%3)*17,4,5,'#478b50')}
@@ -149,6 +149,12 @@ function drawScene(){
  if(state.active){if(keys.arrowleft||keys.a){state.heroX=Math.max(65,state.heroX-2.8);state.heroDir=-1}else if(keys.arrowright||keys.d){state.heroX=Math.min(390,state.heroX+2.8);state.heroDir=1}if(state.jumpV!==undefined){state.heroY=(state.heroY||352)+state.jumpV;state.jumpV+=.38;if(state.heroY>=352){state.heroY=352;state.jumpV=undefined}}}
  const hy=state.heroY||352;drawHero(state.heroX,hy);drawBoss(510,335+Math.sin(performance.now()/380)*2,state.boss);
  text(state.name||'Cavaleiro',state.heroX+18,hy-9,10,'#263a48','center');text(bosses[state.boss].name,548,318,12,'#49313a','center');
+ // richer 16-bit highlights, stone joints, flower clusters and sunlit edges
+ for(let x=212;x<590;x+=38){rect(x,211,22,3,'#e9dcc0');rect(x+4,239,14,3,'#aa987e');}
+ for(let x=0;x<800;x+=37){rect(x,374+(x%4)*3,3,8,'#4d9154');rect(x+7,379+(x%3)*4,4,4,'#f7d47b');}
+ rect(0,344,800,5,'#8dc66e');rect(0,381,800,4,'#d9c49a');
+ // small pennants and warm highlights
+ rect(331,204,5,25,'#e7c477');rect(443,204,5,25,'#e7c477');
  // small instruction sign
  rect(18,20,150,27,'#fff3d4');text('← → MOVER  ESPAÇO PULAR',93,38,9,'#36536a','center');
 }
@@ -170,10 +176,10 @@ function nextQuestion(){
  $('qText').textContent=state.question.q;$('qBoss').textContent='DUELO '+(state.boss+1)+' • '+bosses[state.boss].name;
  $('qFeedback').textContent='';const list=$('answerList');list.innerHTML='';
  state.question.a.forEach((answer,i)=>{const btn=document.createElement('button');btn.textContent=String.fromCharCode(65+i)+') '+answer;btn.onclick=()=>answerQuestion(i);list.appendChild(btn)});
- state.time=30;state.last=performance.now();$('question').style.display='grid';updateTimer();
+ state.time=20;state.last=performance.now();$('question').style.display='grid';updateTimer();
 }
 function askQuestion(){if(!state.active)return;nextQuestion()}
-function updateTimer(){const pct=Math.max(0,state.time/30*100);$('timerFill').style.width=pct+'%';$('timerText').textContent=Math.ceil(state.time);$('qTime').textContent=Math.ceil(state.time);$('timerFill').style.background=state.time<8?'#d75a55':'#e8c66d'}
+function updateTimer(){const pct=Math.max(0,state.time/20*100);$('timerFill').style.width=pct+'%';$('timerText').textContent=Math.ceil(state.time);$('qTime').textContent=Math.ceil(state.time);$('timerFill').style.background=state.time<8?'#d75a55':'#e8c66d'}
 function answerQuestion(choice){
  if(state.locked||!state.active)return;state.locked=true;
  const correct=choice===state.question.ok;
