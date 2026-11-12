@@ -8,12 +8,12 @@
 :root{--bg:#171522;--panel:#282438;--line:#756080;--gold:#f4cc72;--paper:#f5e7c8;--red:#c6534e;--green:#8eb77b;--muted:#bdb3c7}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#37304b,#171522 70%);color:var(--paper);font-family:ui-monospace,Consolas,monospace;padding:18px;display:grid;place-items:center}
 .app{width:min(1000px,100%)}header{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px;flex-wrap:wrap}h1{margin:0;color:var(--gold);font-size:clamp(21px,4vw,36px);text-shadow:3px 3px #69404b;letter-spacing:1px}.tag{color:var(--muted);font-size:11px;margin-top:6px}.hud{display:flex;gap:8px;flex-wrap:wrap}.chip{background:#2c273b;border:2px solid #665477;border-radius:5px;padding:8px 11px;font-size:12px}
-.gameframe{position:relative;border:4px solid #79627b;border-radius:8px;overflow:hidden;background:#27243b;box-shadow:0 15px 50px #0009}canvas{display:block;width:100%;height:auto;image-rendering:auto}
+.gameframe{position:relative;border:4px solid #79627b;border-radius:8px;overflow:hidden;background:#27243b;box-shadow:0 15px 50px #0009}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
 .screen{position:absolute;inset:0;display:grid;place-items:center;background:#151320eF;padding:15px;overflow:auto}.panel{width:min(570px,100%);background:#2c273d;border:3px solid #8a7180;box-shadow:7px 7px #100e18;padding:clamp(16px,4vw,27px);text-align:center}.panel h2{color:var(--gold);margin:0 0 12px;font-size:clamp(19px,3vw,27px)}.panel p{line-height:1.55;color:#e1d6c5;font-size:13px}.field{display:grid;gap:7px;text-align:left;margin:14px 0}.field label{font-size:12px;color:var(--gold)}input[type=text]{width:100%;background:#181622;border:2px solid #77627f;color:white;padding:12px;font:inherit;border-radius:4px}.gender{display:flex;gap:10px}.gender label{flex:1;border:2px solid #6d5b78;background:#211e30;padding:11px;border-radius:4px;text-align:center;cursor:pointer;color:#eee}.gender input{accent-color:#e4b65e}.gender label:has(input:checked){border-color:var(--gold);background:#40364b}.btn{border:0;background:var(--gold);color:#211b2b;font: bold 14px ui-monospace,monospace;padding:13px 18px;cursor:pointer;border-radius:4px;box-shadow:0 4px #a47746;margin-top:10px}.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.btn:active{transform:translateY(2px);box-shadow:0 2px #a47746}.small{font-size:10px;color:var(--muted);line-height:1.5}
 #battleUI{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(9px,2vw,18px)}
 .bossinfo{align-self:center;width:min(390px,78%);text-align:center;text-shadow:2px 2px #17121d}.bossname{font-size:clamp(13px,2.2vw,19px);color:#ffe1a0;font-weight:bold;letter-spacing:1px}.bosstitle{font-size:10px;color:#ead7c0;margin:3px 0 7px}.bar{height:13px;background:#241c28;border:2px solid #d6b77b;padding:1px}.fill{height:100%;background:linear-gradient(90deg,#b63e48,#e66a56);width:100%;transition:width .2s}
 .playerinfo{display:flex;justify-content:space-between;align-items:end;font-size:11px;text-shadow:2px 2px #17121d}.playerinfo>div:first-child{background:linear-gradient(135deg,rgba(35,58,70,.96),rgba(24,42,51,.96));border:3px solid #e5c783;box-shadow:4px 4px 0 #273b43;padding:9px 15px;min-width:170px}.hero-rank{font-size:9px;color:#f4d98e;letter-spacing:1px}.hero-name{font-size:clamp(16px,2.6vw,23px);font-weight:1000;color:#fff4d2;letter-spacing:1px;margin:3px 0}.hearts{color:#ff8277;letter-spacing:3px;font-size:17px}.timerwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(260px,42%);background:#211d2acc;border:2px solid #e3c47d;padding:5px;opacity:.96}.timerlabel{text-align:center;font-size:10px;color:#ffe4a5;margin-bottom:3px}.timerbar{height:9px;background:#4c2935}.timerfill{height:100%;width:100%;background:#e8c66d;transition:width .12s linear}
-#question{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:linear-gradient(145deg,rgba(27,43,49,.97),rgba(42,57,57,.96));border:1px solid rgba(246,220,166,.9);border-radius:12px;box-shadow:0 10px 30px rgba(17,31,32,.35),inset 0 1px rgba(255,255,255,.18);padding:12px 16px;pointer-events:none;text-align:center;text-shadow:1px 2px #263e46}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.8vw,23px);line-height:1.35;margin:0 auto 9px;color:#fff8e7;max-width:700px}.answers{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:auto}.answers button{background:linear-gradient(#fff0c8,#dfbd82);border:3px solid #77543a;border-bottom-width:5px;color:#3c3028;padding:9px 13px;text-align:center;font:bold 12px ui-monospace,monospace;cursor:pointer;border-radius:8px;min-width:110px;box-shadow:2px 3px 0 #253c47}.answers button:hover:not(:disabled){background:linear-gradient(#fff8dd,#edce91);border-color:#fff0c8;transform:translateY(-2px)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:24px;color:#fff0bd;font-size:11px;line-height:1.4;margin-top:5px}
+#question{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:linear-gradient(145deg,rgba(27,43,49,.97),rgba(42,57,57,.96));border:3px solid #d6b77b;border-radius:0;box-shadow:0 10px 30px rgba(17,31,32,.35),inset 0 1px rgba(255,255,255,.18);padding:12px 16px;pointer-events:none;text-align:center;text-shadow:1px 2px #263e46}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.8vw,23px);line-height:1.35;margin:0 auto 9px;color:#fff8e7;max-width:700px}.answers{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:auto}.answers button{background:#e4c58d;border:3px solid #77543a;border-bottom-width:5px;color:#3c3028;padding:9px 13px;text-align:center;font:bold 12px ui-monospace,monospace;cursor:pointer;border-radius:0;min-width:110px;box-shadow:2px 3px 0 #253c47}.answers button:hover:not(:disabled){background:linear-gradient(#fff8dd,#edce91);border-color:#fff0c8;transform:translateY(-2px)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:24px;color:#fff0bd;font-size:11px;line-height:1.4;margin-top:5px}
 #result{display:none;position:absolute;inset:0;z-index:6;background:#151320ed;place-items:center;padding:14px}.resultpanel{width:min(520px,100%);background:#302941;border:3px solid var(--gold);padding:24px;text-align:center;box-shadow:7px 7px #100e18}.resultpanel h2{color:var(--gold)}.resultpanel p{font-size:13px;line-height:1.6}
 @media(max-width:600px){body{padding:8px}.hud{width:100%}.chip{font-size:10px;padding:6px}.timerwrap{top:55%;width:38%}.playerinfo{font-size:9px}.hearts{font-size:14px}}
 </style>
@@ -25,7 +25,7 @@
 <div class="screen" id="intro"><div class="panel"><h2>⚔ A LENDA DO ACENTO PERDIDO ⚔</h2><p>O reino de Gramática foi tomado por três guardiões que roubaram os sinais sagrados da escrita. Para restaurar a paz, você deverá vencê-los em duelos de conhecimento.</p><p><b>Acertou:</b> o chefe perde 1 vida. <b>Errou ou o tempo acabou:</b> você perde 1 vida. Você tem 3 vidas para vencer os três chefes.</p>
 <div class="field"><label for="heroName">NOME DO(A) CAVALEIRO(A)</label><input id="heroName" type="text" maxlength="16" placeholder="Digite seu nome..." value="Arthur"></div>
 <div class="field"><label>ESCOLHA SEU PERSONAGEM</label><div class="gender"><label><input type="radio" name="gender" value="male" checked> ⚔ Homem</label><label><input type="radio" name="gender" value="female"> 🛡 Mulher</label></div></div>
-<button class="btn" id="startBtn">INICIAR JORNADA</button><p class="small">Cada pergunta tem 20 segundos. A barra reinicia após cada resposta.</p></div></div>
+<div class="field" style="margin-top:18px"><label style="display:flex;gap:9px;align-items:center"><input id="adminMode" type="checkbox"> MODO ADMINISTRADOR — todas as respostas contam como corretas</label></div><button class="btn" id="startBtn">INICIAR JORNADA</button><p class="small">Cada pergunta tem 20 segundos. A barra reinicia após cada resposta.</p></div></div>
 <div id="question"><div class="qpanel"><div class="qtop"><span id="qBoss">DUELO 1</span><span>⏳ <b id="qTime">30</b>s</span></div><h3 id="qText"></h3><div class="answers" id="answerList"></div><div class="feedback" id="qFeedback"></div></div></div>
 <div id="result"><div class="resultpanel"><h2 id="resultTitle"></h2><p id="resultText"></p><button class="btn" id="againBtn">JOGAR NOVAMENTE</button></div></div>
 </div>
@@ -61,7 +61,7 @@ const questions=[
 ];
 // Remove/replace intentionally tricky prompt with unambiguous question
 questions[16]={q:'Complete: “O cavaleiro chegou ___ conclusão de que precisava treinar.”',a:['a','à','há','as'],ok:1,why:'“Chegar a” + “a conclusão” = à conclusão.'};
-let state={name:'Arthur',gender:'male',lives:3,boss:0,bossHP:2,hits:0,time:30,last:0,active:false,locked:false,used:[],question:null,heroX:215,heroDir:1,attackFlash:0};
+let state={name:'Arthur',gender:'male',lives:3,boss:0,bossHP:2,hits:0,time:30,last:0,active:false,locked:false,used:[],question:null,heroX:215,heroY:296,heroDir:1,attackFlash:0,admin:false};
 const keys={};
 addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','a','d',' ','ArrowUp'].includes(e.key))e.preventDefault();keys[e.key.toLowerCase()]=true;if((e.key===' '||e.key==='ArrowUp')&&state.active)state.jumpV=-7});
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
@@ -69,33 +69,37 @@ function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math
 function text(t,x,y,size,color='#f5e7c8',align='left'){ctx.fillStyle=color;ctx.font='bold '+size+'px monospace';ctx.textAlign=align;ctx.fillText(t,x,y)}
 function drawHero(x,y){
  const female=state.gender==='female';
- const shadow=ctx.createRadialGradient(x+20,y+46,2,x+20,y+46,24);shadow.addColorStop(0,'rgba(28,37,33,.38)');shadow.addColorStop(1,'rgba(28,37,33,0)');ctx.fillStyle=shadow;ctx.fillRect(x-8,y+34,58,22);
- const cape=ctx.createLinearGradient(x,y+8,x+35,y+48);cape.addColorStop(0,female?'#c66b83':'#b75a50');cape.addColorStop(1,'#503b4b');
- ctx.fillStyle=cape;ctx.beginPath();ctx.moveTo(x+12,y+13);ctx.quadraticCurveTo(x-2,y+20,x+3,y+47);ctx.quadraticCurveTo(x+18,y+42,x+34,y+48);ctx.lineTo(x+32,y+16);ctx.closePath();ctx.fill();
- ctx.fillStyle='#465568';ctx.beginPath();ctx.roundRect(x+11,y+30,9,14,4);ctx.roundRect(x+23,y+30,9,14,4);ctx.fill();ctx.fillStyle='#76523d';ctx.beginPath();ctx.roundRect(x+7,y+41,15,6,3);ctx.roundRect(x+22,y+41,15,6,3);ctx.fill();
- const steel=ctx.createLinearGradient(x+8,y+12,x+34,y+36);steel.addColorStop(0,'#f1ead6');steel.addColorStop(.5,'#9eafbb');steel.addColorStop(1,'#50677b');ctx.fillStyle=steel;ctx.beginPath();ctx.moveTo(x+10,y+15);ctx.quadraticCurveTo(x+21,y+9,x+33,y+16);ctx.lineTo(x+31,y+34);ctx.quadraticCurveTo(x+21,y+39,x+10,y+33);ctx.closePath();ctx.fill();
- ctx.fillStyle='#d6b56e';ctx.beginPath();ctx.moveTo(x+21,y+17);ctx.lineTo(x+25,y+29);ctx.lineTo(x+21,y+34);ctx.lineTo(x+17,y+29);ctx.closePath();ctx.fill();
- ctx.fillStyle='#d8ad88';ctx.beginPath();ctx.ellipse(x+21,y+8,9,11,0,0,Math.PI*2);ctx.fill();
- if(female){ctx.fillStyle='#6d4052';ctx.beginPath();ctx.moveTo(x+12,y+9);ctx.quadraticCurveTo(x+7,y-9,x+23,y-7);ctx.quadraticCurveTo(x+35,y-4,x+30,y+15);ctx.lineTo(x+29,y+27);ctx.quadraticCurveTo(x+24,y+17,x+26,y+10);ctx.lineTo(x+15,y+11);ctx.lineTo(x+12,y+25);ctx.closePath();ctx.fill();ctx.fillStyle='#d7b778';ctx.beginPath();ctx.arc(x+21,y-2,3,Math.PI,0);ctx.fill();}
- else{ctx.fillStyle='#778a9b';ctx.beginPath();ctx.moveTo(x+11,y+7);ctx.lineTo(x+13,y-3);ctx.quadraticCurveTo(x+21,y-10,x+30,y-3);ctx.lineTo(x+32,y+8);ctx.lineTo(x+25,y+5);ctx.lineTo(x+21,y+9);ctx.lineTo(x+16,y+5);ctx.closePath();ctx.fill();ctx.fillStyle='#d8bb79';ctx.beginPath();ctx.moveTo(x+20,y-6);ctx.lineTo(x+23,y-14);ctx.lineTo(x+26,y-5);ctx.closePath();ctx.fill();}
- ctx.fillStyle='#44363a';ctx.beginPath();ctx.arc(x+18,y+8,1,0,Math.PI*2);ctx.arc(x+24,y+8,1,0,Math.PI*2);ctx.fill();
- ctx.save();ctx.translate(x+37,y+17);ctx.rotate(.12);ctx.fillStyle='#e8eff0';ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(4,-1);ctx.lineTo(3,25);ctx.lineTo(1,31);ctx.lineTo(0,25);ctx.closePath();ctx.fill();ctx.fillStyle='#c99d58';ctx.beginPath();ctx.roundRect(-4,22,12,3,1);ctx.roundRect(0,25,4,8,1);ctx.fill();ctx.restore();
+ // Ground shadow and chunky 8-bit silhouette; y is the character's feet anchor.
+ rect(x+3,y+1,38,5,'#405744');rect(x+7,y-3,30,5,'#536c51');
+ // cape, deliberately stepped
+ rect(x+9,y-49,23,31,female?'#a94362':'#a9433f');rect(x+5,y-35,7,18,female?'#84344f':'#77353a');rect(x+30,y-31,7,17,female?'#84344f':'#77353a');
+ // legs and boots
+ rect(x+11,y-22,9,15,'#38465a');rect(x+23,y-22,9,15,'#38465a');rect(x+8,y-8,13,7,'#604638');rect(x+22,y-8,14,7,'#604638');
+ // torso armour, pixel highlights and belt
+ rect(x+9,y-51,27,29,'#657f91');rect(x+12,y-54,21,5,'#c5d0ce');rect(x+12,y-47,21,19,'#9eafbb');rect(x+18,y-45,9,15,'#e0c274');rect(x+20,y-42,5,9,'#fff0b3');rect(x+10,y-27,25,4,'#4d5360');
+ // arms and gauntlets
+ rect(x+3,y-48,8,19,'#9eafbb');rect(x+34,y-48,8,19,'#9eafbb');rect(x+3,y-31,8,5,'#d6b56e');rect(x+34,y-31,8,5,'#d6b56e');
+ // head and hair/helmet
+ rect(x+15,y-69,17,16,'#d8ad88');rect(x+13,y-73,21,7,female?'#60394c':'#71899a');rect(x+14,y-68,5,5,female?'#60394c':'#71899a');rect(x+28,y-68,6,5,female?'#60394c':'#71899a');
+ if(female){rect(x+12,y-63,5,19,'#60394c');rect(x+30,y-63,5,15,'#60394c');rect(x+19,y-75,9,3,'#d6b56e');}
+ else{rect(x+19,y-78,8,7,'#d6b56e');rect(x+16,y-66,3,2,'#42363a');rect(x+27,y-66,3,2,'#42363a');}
+ // sword, square blade
+ rect(x+41,y-50,5,29,'#dce6e7');rect(x+39,y-54,9,5,'#d6b56e');rect(x+42,y-21,4,10,'#76523d');
 }
 function drawBoss(x,y,index){
- const b=bosses[index],metal=ctx.createLinearGradient(x,y,x+72,y+65);metal.addColorStop(0,'#f0e3c5');metal.addColorStop(.48,b.armor);metal.addColorStop(1,'#494354');
- ctx.fillStyle='rgba(26,35,32,.35)';ctx.beginPath();ctx.ellipse(x+40,y+70,40,7,0,0,Math.PI*2);ctx.fill();
- const cloak=ctx.createLinearGradient(x,y+20,x+65,y+70);cloak.addColorStop(0,b.color);cloak.addColorStop(1,'#302b40');ctx.fillStyle=cloak;ctx.beginPath();ctx.moveTo(x+22,y+25);ctx.quadraticCurveTo(x+4,y+40,x+10,y+68);ctx.quadraticCurveTo(x+40,y+78,x+70,y+67);ctx.quadraticCurveTo(x+77,y+39,x+57,y+25);ctx.closePath();ctx.fill();
- ctx.fillStyle='#403746';ctx.beginPath();ctx.roundRect(x+22,y+53,17,18,5);ctx.roundRect(x+43,y+53,17,18,5);ctx.fill();ctx.fillStyle='#76513e';ctx.beginPath();ctx.roundRect(x+17,y+65,23,7,3);ctx.roundRect(x+41,y+65,23,7,3);ctx.fill();
- ctx.fillStyle=metal;ctx.beginPath();ctx.moveTo(x+19,y+27);ctx.quadraticCurveTo(x+40,y+17,x+61,y+27);ctx.lineTo(x+58,y+56);ctx.quadraticCurveTo(x+40,y+65,x+22,y+56);ctx.closePath();ctx.fill();
- ctx.fillStyle=b.color;ctx.beginPath();ctx.moveTo(x+27,y+31);ctx.quadraticCurveTo(x+40,y+26,x+53,y+31);ctx.lineTo(x+51,y+49);ctx.lineTo(x+40,y+55);ctx.lineTo(x+29,y+49);ctx.closePath();ctx.fill();
- ctx.fillStyle='#e4c77d';ctx.beginPath();ctx.moveTo(x+40,y+31);ctx.lineTo(x+45,y+44);ctx.lineTo(x+40,y+51);ctx.lineTo(x+35,y+44);ctx.closePath();ctx.fill();
- ctx.fillStyle=metal;ctx.beginPath();ctx.ellipse(x+18,y+31,12,9,-.3,0,Math.PI*2);ctx.ellipse(x+62,y+31,12,9,.3,0,Math.PI*2);ctx.fill();
- ctx.fillStyle='#d6aa83';ctx.beginPath();ctx.ellipse(x+40,y+13,15,17,0,0,Math.PI*2);ctx.fill();
- ctx.fillStyle=metal;ctx.beginPath();ctx.moveTo(x+23,y+13);ctx.lineTo(x+24,y+2);ctx.quadraticCurveTo(x+40,y-9,x+56,y+2);ctx.lineTo(x+57,y+17);ctx.quadraticCurveTo(x+40,y+23,x+23,y+17);ctx.closePath();ctx.fill();
- ctx.fillStyle='#342b39';ctx.beginPath();ctx.ellipse(x+34,y+14,2,1.6,0,0,Math.PI*2);ctx.ellipse(x+46,y+14,2,1.6,0,0,Math.PI*2);ctx.fill();
- if(index===0){ctx.strokeStyle='#c5cbd0';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x+29,y+2);ctx.lineTo(x+24,y-9);ctx.moveTo(x+51,y+2);ctx.lineTo(x+56,y-9);ctx.stroke();ctx.strokeStyle='#e7ecec';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x+78,y+8);ctx.lineTo(x+76,y+62);ctx.stroke();ctx.strokeStyle='#c99e58';ctx.beginPath();ctx.moveTo(x+67,y+27);ctx.lineTo(x+87,y+27);ctx.stroke();}
- if(index===1){ctx.fillStyle='#b78ad5';ctx.beginPath();ctx.moveTo(x+25,y+2);ctx.quadraticCurveTo(x+13,y-17,x+30,y-9);ctx.quadraticCurveTo(x+40,y-17,x+50,y-10);ctx.quadraticCurveTo(x+68,y-18,x+55,y+4);ctx.closePath();ctx.fill();ctx.strokeStyle='#805d9e';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x+80,y+4);ctx.lineTo(x+80,y+68);ctx.stroke();ctx.fillStyle='#e6c9fa';ctx.beginPath();ctx.arc(x+80,y+2,8,0,Math.PI*2);ctx.fill();}
- if(index===2){ctx.fillStyle='#e8c66e';ctx.beginPath();ctx.moveTo(x+25,y+2);ctx.lineTo(x+22,y-13);ctx.lineTo(x+35,y-5);ctx.lineTo(x+40,y-20);ctx.lineTo(x+46,y-5);ctx.lineTo(x+59,y-13);ctx.lineTo(x+55,y+3);ctx.closePath();ctx.fill();ctx.strokeStyle='#80583c';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x+80,y+5);ctx.lineTo(x+80,y+70);ctx.stroke();ctx.fillStyle='#d7b15e';ctx.beginPath();ctx.moveTo(x+65,y+2);ctx.quadraticCurveTo(x+78,y-7,x+92,y+2);ctx.lineTo(x+89,y+18);ctx.lineTo(x+67,y+18);ctx.closePath();ctx.fill();}
+ const b=bosses[index],armor=b.armor;
+ // boots and mantle
+ rect(x+17,y-4,19,7,'#493d42');rect(x+43,y-4,20,7,'#493d42');rect(x+13,y+1,24,6,'#76513e');rect(x+40,y+1,25,6,'#76513e');
+ rect(x+12,y-52,54,48,b.color);rect(x+7,y-42,9,34,'#483647');rect(x+62,y-43,10,34,'#483647');
+ // shoulder plates
+ rect(x+7,y-57,17,12,armor);rect(x+55,y-57,18,12,armor);rect(x+11,y-61,9,5,'#e6d7b6');rect(x+59,y-61,9,5,'#e6d7b6');
+ // chest plate
+ rect(x+20,y-56,39,37,armor);rect(x+25,y-52,29,27,b.color);rect(x+34,y-49,11,20,'#e2c477');rect(x+37,y-45,5,12,'#fff0b0');
+ // head and helmet
+ rect(x+27,y-78,27,23,'#d6aa83');rect(x+23,y-83,35,10,armor);rect(x+27,y-88,27,7,armor);rect(x+31,y-73,4,3,'#352a38');rect(x+46,y-73,4,3,'#352a38');
+ if(index===0){rect(x+24,y-96,6,13,'#c5cbd0');rect(x+52,y-96,6,13,'#c5cbd0');rect(x+77,y-64,6,61,'#dce8e9');rect(x+73,y-49,14,5,'#c99e58');}
+ if(index===1){rect(x+21,y-93,8,12,'#b78ad5');rect(x+33,y-99,9,18,'#b78ad5');rect(x+49,y-95,9,14,'#b78ad5');rect(x+80,y-70,6,68,'#805d9e');rect(x+75,y-78,16,10,'#e6c9fa');}
+ if(index===2){rect(x+22,y-94,7,14,'#e8c66e');rect(x+34,y-101,9,21,'#e8c66e');rect(x+50,y-94,7,14,'#e8c66e');rect(x+79,y-68,8,70,'#80583c');rect(x+73,y-77,20,12,'#d7b15e');}
 }
 function drawScene(){
  const sky=ctx.createLinearGradient(0,0,0,450);sky.addColorStop(0,'#65b6df');sky.addColorStop(.48,'#c4dfd2');sky.addColorStop(.8,'#f2d9ac');sky.addColorStop(1,'#d9b17e');ctx.fillStyle=sky;ctx.fillRect(0,0,800,450);
@@ -120,10 +124,10 @@ function drawScene(){
  ctx.fillStyle='#c5aa7d';ctx.beginPath();ctx.moveTo(0,369);ctx.quadraticCurveTo(190,350,390,368);ctx.quadraticCurveTo(610,386,800,360);ctx.lineTo(800,450);ctx.lineTo(0,450);ctx.fill();
  ctx.strokeStyle='rgba(111,91,70,.25)';ctx.lineWidth=1.5;for(let y=394;y<450;y+=24){ctx.beginPath();ctx.moveTo(0,y);ctx.quadraticCurveTo(380,y-5,800,y+2);ctx.stroke();}for(let x=30;x<800;x+=78){ctx.beginPath();ctx.moveTo(x,385);ctx.lineTo(x-5,450);ctx.stroke();}
  for(let i=0;i<42;i++){const x=(i*67+21)%800,y=348+(i%5)*18;ctx.strokeStyle='#3c704e';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y+8);ctx.quadraticCurveTo(x-4,y-1,x-8,y-5);ctx.moveTo(x,y+8);ctx.quadraticCurveTo(x+3,y-2,x+9,y-7);ctx.stroke();if(i%4===0){ctx.fillStyle='#f4d38a';ctx.beginPath();ctx.arc(x,y-7,3,0,Math.PI*2);ctx.fill();}}
- if(state.active){if(keys.arrowleft||keys.a){state.heroX=Math.max(65,state.heroX-2.8);state.heroDir=-1}else if(keys.arrowright||keys.d){state.heroX=Math.min(390,state.heroX+2.8);state.heroDir=1}if(state.jumpV!==undefined){state.heroY=(state.heroY||202)+state.jumpV;state.jumpV+=.38;if(state.heroY>=202){state.heroY=202;state.jumpV=undefined}}}
- const hy=state.heroY||202;drawHero(state.heroX,hy);drawBoss(520,177+Math.sin(performance.now()/900)*2,state.boss);
- ctx.fillStyle='rgba(37,47,48,.76)';ctx.beginPath();ctx.roundRect(state.heroX-12,hy-31,66,19,8);ctx.fill();text(state.name||'Cavaleiro',state.heroX+21,hy-18,10,'#fff1cf','center');
- ctx.fillStyle='rgba(47,40,47,.8)';ctx.beginPath();ctx.roundRect(514,137,94,21,9);ctx.fill();text(bosses[state.boss].name,561,151,10,'#fff0d0','center');
+ if(state.active){if(keys.arrowleft||keys.a){state.heroX=Math.max(65,state.heroX-2.8);state.heroDir=-1}else if(keys.arrowright||keys.d){state.heroX=Math.min(390,state.heroX+2.8);state.heroDir=1}if(state.jumpV!==undefined){state.heroY=(state.heroY||296)+state.jumpV;state.jumpV+=.38;if(state.heroY>=296){state.heroY=296;state.jumpV=undefined}}}
+ const hy=state.heroY||296;drawHero(state.heroX,hy);drawBoss(520,365,state.boss);
+ ctx.fillStyle='rgba(37,47,48,.76)';ctx.beginPath();ctx.roundRect(state.heroX-12,hy-88,66,19,8);ctx.fill();text(state.name||'Cavaleiro',state.heroX+21,hy-75,10,'#fff1cf','center');
+ ctx.fillStyle='rgba(47,40,47,.8)';ctx.beginPath();ctx.roundRect(514,266,94,21,0);ctx.fill();text(bosses[state.boss].name,561,280,10,'#fff0d0','center');
  ctx.fillStyle='rgba(255,250,231,.82)';ctx.beginPath();ctx.roundRect(18,18,175,29,10);ctx.fill();text('← → MOVER   ESPAÇO PULAR',105,37,9,'#36536a','center');
 }
 function updateHud(){
@@ -133,7 +137,7 @@ function updateHud(){
 }
 function startGame(){
  const n=$('heroName').value.trim();state.name=n||'Cavaleiro';state.gender=document.querySelector('input[name=gender]:checked').value;
- state.lives=3;state.boss=0;state.bossHP=bosses[0].hp;state.hits=0;state.used=[];state.active=true;state.locked=false;state.heroX=215;state.heroY=202;state.jumpV=undefined;
+ state.lives=3;state.boss=0;state.bossHP=bosses[0].hp;state.hits=0;state.used=[];state.active=true;state.locked=false;state.heroX=215;state.heroY=296;state.admin=$('adminMode').checked;state.jumpV=undefined;
  $('intro').style.display='none';$('result').style.display='none';$('battleUI').style.display='flex';updateHud();askQuestion();
 }
 function nextQuestion(){
@@ -150,10 +154,10 @@ function askQuestion(){if(!state.active)return;nextQuestion()}
 function updateTimer(){const pct=Math.max(0,state.time/20*100);$('timerFill').style.width=pct+'%';$('timerText').textContent=Math.ceil(state.time);$('qTime').textContent=Math.ceil(state.time);$('timerFill').style.background=state.time<8?'#d75a55':'#e8c66d'}
 function answerQuestion(choice){
  if(state.locked||!state.active)return;state.locked=true;
- const correct=choice===state.question.ok;
+ const correct=state.admin||choice===state.question.ok;
  document.querySelectorAll('#answerList button').forEach((b,i)=>{b.disabled=true;if(i===state.question.ok)b.style.borderColor='#8eb77b';if(i===choice&&!correct)b.style.borderColor='#d75a55'});
  if(correct){
-  state.bossHP--;state.hits++;$('qFeedback').textContent='ACERTOU! '+state.question.why;
+  state.bossHP--;state.hits++;$('qFeedback').textContent=state.admin?'MODO ADMINISTRADOR: resposta considerada correta! '+state.question.why:'ACERTOU! '+state.question.why;
  }else{
   state.lives--;$('qFeedback').textContent='ERROU! '+state.question.why+' Você perdeu 1 vida.';
  }
