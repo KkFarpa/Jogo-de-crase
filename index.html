@@ -13,7 +13,7 @@
 #battleUI{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(9px,2vw,18px)}
 .bossinfo{align-self:center;width:min(390px,78%);text-align:center;text-shadow:2px 2px #17121d}.bossname{font-size:clamp(13px,2.2vw,19px);color:#ffe1a0;font-weight:bold;letter-spacing:1px}.bosstitle{font-size:10px;color:#ead7c0;margin:3px 0 7px}.bar{height:13px;background:#241c28;border:2px solid #d6b77b;padding:1px}.fill{height:100%;background:linear-gradient(90deg,#b63e48,#e66a56);width:100%;transition:width .2s}
 .playerinfo{display:flex;justify-content:space-between;align-items:end;font-size:11px;text-shadow:2px 2px #17121d}.hearts{color:#ff8277;letter-spacing:3px;font-size:17px}.timerwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(260px,42%);background:#211d2acc;border:2px solid #e3c47d;padding:5px;opacity:.96}.timerlabel{text-align:center;font-size:10px;color:#ffe4a5;margin-bottom:3px}.timerbar{height:9px;background:#4c2935}.timerfill{height:100%;width:100%;background:#e8c66d;transition:width .12s linear}
-#question{position:absolute;inset:0;display:none;place-items:center;background:#151320eF;padding:12px;z-index:5}.qpanel{width:min(600px,100%);background:#302941;border:3px solid #d0ad70;box-shadow:7px 7px #100e18;padding:clamp(15px,3vw,25px)}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.6vw,21px);line-height:1.5;margin:0 0 15px}.answers{display:grid;gap:8px}.answers button{background:#211e30;border:2px solid #75627c;color:#f6ead2;padding:12px;text-align:left;font:12px ui-monospace,monospace;cursor:pointer;border-radius:3px}.answers button:hover:not(:disabled){background:#4a3b56;border-color:var(--gold)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:35px;color:var(--gold);font-size:11px;line-height:1.5;margin-top:12px}
+#question{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(700px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:rgba(34,31,47,.94);border:3px solid #e2c078;box-shadow:5px 5px #202033;padding:clamp(10px,2vw,18px);pointer-events:auto;backdrop-filter:blur(3px)}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.6vw,21px);line-height:1.5;margin:0 0 15px}.answers{display:grid;gap:8px}.answers button{background:#211e30;border:2px solid #75627c;color:#f6ead2;padding:12px;text-align:left;font:12px ui-monospace,monospace;cursor:pointer;border-radius:3px}.answers button:hover:not(:disabled){background:#4a3b56;border-color:var(--gold)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:35px;color:var(--gold);font-size:11px;line-height:1.5;margin-top:12px}
 #result{display:none;position:absolute;inset:0;z-index:6;background:#151320ed;place-items:center;padding:14px}.resultpanel{width:min(520px,100%);background:#302941;border:3px solid var(--gold);padding:24px;text-align:center;box-shadow:7px 7px #100e18}.resultpanel h2{color:var(--gold)}.resultpanel p{font-size:13px;line-height:1.6}
 @media(max-width:600px){body{padding:8px}.hud{width:100%}.chip{font-size:10px;padding:6px}.timerwrap{top:55%;width:38%}.playerinfo{font-size:9px}.hearts{font-size:14px}}
 </style>
@@ -61,7 +61,10 @@ const questions=[
 ];
 // Remove/replace intentionally tricky prompt with unambiguous question
 questions[16]={q:'Complete: “O cavaleiro chegou ___ conclusão de que precisava treinar.”',a:['a','à','há','as'],ok:1,why:'“Chegar a” + “a conclusão” = à conclusão.'};
-let state={name:'Arthur',gender:'male',lives:3,boss:0,bossHP:2,hits:0,time:30,last:0,active:false,locked:false,used:[],question:null};
+let state={name:'Arthur',gender:'male',lives:3,boss:0,bossHP:2,hits:0,time:30,last:0,active:false,locked:false,used:[],question:null,heroX:215,heroDir:1,attackFlash:0};
+const keys={};
+addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','a','d',' ','ArrowUp'].includes(e.key))e.preventDefault();keys[e.key.toLowerCase()]=true;if((e.key===' '||e.key==='ArrowUp')&&state.active)state.jumpV=-7});
+addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
 function text(t,x,y,size,color='#f5e7c8',align='left'){ctx.fillStyle=color;ctx.font='bold '+size+'px monospace';ctx.textAlign=align;ctx.fillText(t,x,y)}
 function drawHero(x,y){ // pixel knight, gender-specific silhouette/helmet
@@ -109,27 +112,45 @@ function drawBoss(x,y,index){const b=bosses[index],col=b.armor;
  if(index===2){rect(x+74,y+7,7,52,'#7a583e');rect(x+65,y+4,25,15,'#d4b15d');rect(x+66,y+4,7,15,'#e4d3a2');}
 }
 function drawScene(){
- const g=ctx.createLinearGradient(0,0,0,450);g.addColorStop(0,'#252541');g.addColorStop(.65,'#65516a');g.addColorStop(1,'#32283b');ctx.fillStyle=g;ctx.fillRect(0,0,800,450);
- // moon and stars
- rect(670,52,52,52,'#e7d39a');rect(680,42,40,12,'#e7d39a');rect(680,104,40,8,'#e7d39a');rect(681,53,40,49,'#c8c2a1');
- for(let i=0;i<45;i++){let x=(i*137+31)%800,y=(i*67+17)%185;rect(x,y,3,3,'#f4dca0')}
- // castle silhouette
- rect(0,190,800,145,'#302b42');rect(40,125,120,210,'#393148');rect(60,100,18,235,'#393148');rect(125,105,18,230,'#393148');rect(650,145,110,190,'#393148');rect(680,112,18,223,'#393148');rect(724,116,18,219,'#393148');
- for(let x=0;x<800;x+=40){rect(x,330,40,80,'#51404c');rect(x+4,337,4,4,'#80636a')}
- // battlements
- for(let x=0;x<800;x+=32){rect(x,320,20,18,'#6e5661')}
- // torches
- rect(85,240,6,24,'#805339');rect(78,231,20,12,'#e89b4c');rect(82,225,12,12,'#ffe08a');
- rect(710,245,6,24,'#805339');rect(703,236,20,12,'#e89b4c');rect(707,230,12,12,'#ffe08a');
- // floor
- rect(0,410,800,40,'#292337');rect(0,410,800,6,'#b08a5b');for(let x=0;x<800;x+=48){rect(x,428,26,3,'#665064')}
- // battle props
- rect(155,365,25,45,'#6d4c40');rect(147,358,41,10,'#b18b5d');rect(630,367,24,43,'#6d4c40');rect(622,360,40,10,'#b18b5d');
- drawHero(220,352);
- drawBoss(510,335,state.boss);
- // labels above heads on canvas too
- text(state.name||'Cavaleiro',236,340,10,'#f6e7c9','center');
- text(bosses[state.boss].name,548,318,12,'#ffe0a0','center');
+ // Bright 16-bit daytime kingdom: layered sky, clouds, distant mountains and detailed castle courtyard
+ const sky=ctx.createLinearGradient(0,0,0,450);sky.addColorStop(0,'#67c8f2');sky.addColorStop(.58,'#b6e8e7');sky.addColorStop(1,'#f7d99a');ctx.fillStyle=sky;ctx.fillRect(0,0,800,450);
+ // sun
+ rect(674,42,58,58,'#ffe58a');rect(684,32,38,78,'#ffe58a');rect(664,52,78,38,'#ffe58a');rect(682,50,42,42,'#fff2b5');
+ // layered clouds
+ for(const [x,y] of [[70,70],[280,105],[490,55],[590,145]]){rect(x,y+10,76,18,'#fff8e7');rect(x+14,y,42,28,'#fff8e7');rect(x+26,y-6,26,12,'#fffdf3');rect(x-8,y+18,92,8,'#d5eff0')}
+ // distant green mountains
+ for(let i=0;i<6;i++){let x=i*155-30;ctx.fillStyle=i%2?'#83b99a':'#6ca98e';ctx.beginPath();ctx.moveTo(x,300);ctx.lineTo(x+88,145+(i%3)*22);ctx.lineTo(x+180,300);ctx.fill();rect(x+76,190,16,18,'#e8f1dc')}
+ // far hills and trees
+ rect(0,278,800,72,'#83bd78');rect(0,300,800,50,'#69a968');
+ for(let i=0;i<10;i++){let x=i*91+8;rect(x+12,245,12,55,'#805b42');rect(x,220,36,36,'#39865c');rect(x+6,207,25,28,'#4b9c65');rect(x+4,239,28,12,'#72b96b')}
+ // castle stone walls with towers, roofs, windows and banners
+ rect(205,205,390,145,'#c9b99a');rect(220,190,360,18,'#e5d5b5');
+ rect(235,140,68,210,'#d7c7a6');rect(497,140,68,210,'#d7c7a6');
+ rect(225,125,88,20,'#b7a487');rect(487,125,88,20,'#b7a487');
+ for(let x=230;x<585;x+=28){rect(x,178,15,17,'#e6d7b9')}
+ // crenellations
+ for(let x=215;x<590;x+=32){rect(x,184,19,17,'#c9b99a')}
+ // tower roofs
+ ctx.fillStyle='#b34f4b';ctx.beginPath();ctx.moveTo(225,140);ctx.lineTo(269,72);ctx.lineTo(313,140);ctx.fill();ctx.beginPath();ctx.moveTo(487,140);ctx.lineTo(531,72);ctx.lineTo(575,140);ctx.fill();
+ rect(260,82,17,52,'#e8d9b8');rect(522,82,17,52,'#e8d9b8');
+ // windows and gate
+ for(let x of [249,277,511,539]){rect(x,155,13,25,'#41627b');rect(x+3,155,3,25,'#9ed2dc')}
+ rect(365,266,70,84,'#604a43');rect(375,277,50,73,'#2e4051');rect(394,277,12,73,'#d9b77a');rect(360,258,80,10,'#e6d2a9');
+ // banners
+ rect(330,200,7,52,'#795b3d');rect(337,205,27,30,'#b9434a');rect(436,200,7,52,'#795b3d');rect(443,205,27,30,'#416c9d');
+ // foreground grass and stone arena
+ rect(0,348,800,102,'#69a85c');rect(0,365,800,85,'#8fbd70');rect(0,386,800,64,'#b7a17a');
+ for(let x=0;x<800;x+=64){rect(x,386,58,4,'#d6c19a');rect(x+25,408,4,19,'#a58d6c');rect(x+8,436,25,3,'#9d8768')}
+ // flowers and shrubs
+ for(let i=0;i<24;i++){let x=(i*67+19)%790;rect(x,373+(i%3)*17,4,4,i%2?'#f6d66e':'#f4e9df');rect(x+3,378+(i%3)*17,4,5,'#478b50')}
+ // arena props: barrels, shields, flags
+ rect(95,338,27,39,'#8b5c3e');rect(91,334,35,7,'#c28b53');rect(99,348,4,27,'#d5a45f');rect(674,342,27,35,'#8b5c3e');rect(670,337,35,7,'#c28b53');
+ // Characters move in real time while the question stays on screen
+ if(state.active){if(keys.arrowleft||keys.a){state.heroX=Math.max(65,state.heroX-2.8);state.heroDir=-1}else if(keys.arrowright||keys.d){state.heroX=Math.min(390,state.heroX+2.8);state.heroDir=1}if(state.jumpV!==undefined){state.heroY=(state.heroY||352)+state.jumpV;state.jumpV+=.38;if(state.heroY>=352){state.heroY=352;state.jumpV=undefined}}}
+ const hy=state.heroY||352;drawHero(state.heroX,hy);drawBoss(510,335+Math.sin(performance.now()/380)*2,state.boss);
+ text(state.name||'Cavaleiro',state.heroX+18,hy-9,10,'#263a48','center');text(bosses[state.boss].name,548,318,12,'#49313a','center');
+ // small instruction sign
+ rect(18,20,150,27,'#fff3d4');text('← → MOVER  ESPAÇO PULAR',93,38,9,'#36536a','center');
 }
 function updateHud(){
  const b=bosses[state.boss];$('phase').textContent=(state.boss+1)+'/3';$('livesTop').textContent=state.lives;$('hitsTop').textContent=state.hits;
@@ -138,8 +159,8 @@ function updateHud(){
 }
 function startGame(){
  const n=$('heroName').value.trim();state.name=n||'Cavaleiro';state.gender=document.querySelector('input[name=gender]:checked').value;
- state.lives=3;state.boss=0;state.bossHP=bosses[0].hp;state.hits=0;state.used=[];state.active=true;state.locked=false;
- $('intro').style.display='none';$('result').style.display='none';$('battleUI').style.display='flex';updateHud();drawScene();askQuestion();
+ state.lives=3;state.boss=0;state.bossHP=bosses[0].hp;state.hits=0;state.used=[];state.active=true;state.locked=false;state.heroX=215;state.heroY=352;state.jumpV=undefined;
+ $('intro').style.display='none';$('result').style.display='none';$('battleUI').style.display='flex';updateHud();askQuestion();
 }
 function nextQuestion(){
  const unused=questions.map((q,i)=>i).filter(i=>!state.used.includes(i));
@@ -154,7 +175,7 @@ function nextQuestion(){
 function askQuestion(){if(!state.active)return;nextQuestion()}
 function updateTimer(){const pct=Math.max(0,state.time/30*100);$('timerFill').style.width=pct+'%';$('timerText').textContent=Math.ceil(state.time);$('qTime').textContent=Math.ceil(state.time);$('timerFill').style.background=state.time<8?'#d75a55':'#e8c66d'}
 function answerQuestion(choice){
- if(state.locked||!state.active)return;state.locked=true;clearInterval(state.clock);
+ if(state.locked||!state.active)return;state.locked=true;
  const correct=choice===state.question.ok;
  document.querySelectorAll('#answerList button').forEach((b,i)=>{b.disabled=true;if(i===state.question.ok)b.style.borderColor='#8eb77b';if(i===choice&&!correct)b.style.borderColor='#d75a55'});
  if(correct){
@@ -175,8 +196,8 @@ function answerQuestion(choice){
   askQuestion();
  },1450);
 }
-function timeoutQuestion(){if(state.locked)return;state.locked=true;clearInterval(state.clock);state.lives--;updateHud();$('qFeedback').textContent='O TEMPO ACABOU! Você perdeu 1 vida. Respire e tente a próxima.';document.querySelectorAll('#answerList button').forEach(b=>b.disabled=true);setTimeout(()=>{$('question').style.display='none';state.locked=false;if(state.lives<=0)endGame(false);else askQuestion()},1300)}
-function tick(now){if(!state.active)return;if($('question').style.display==='grid'&&!state.locked){const dt=Math.min((now-state.last)/1000,.15);state.last=now;state.time-=dt;updateTimer();if(state.time<=0)timeoutQuestion()}requestAnimationFrame(tick)}
+function timeoutQuestion(){if(state.locked)return;state.locked=true;state.lives--;updateHud();$('qFeedback').textContent='O TEMPO ACABOU! Você perdeu 1 vida. Respire e tente a próxima.';document.querySelectorAll('#answerList button').forEach(b=>b.disabled=true);setTimeout(()=>{$('question').style.display='none';state.locked=false;if(state.lives<=0)endGame(false);else askQuestion()},1300)}
+function tick(now){if(state.active){if($('question').style.display==='grid'&&!state.locked){const dt=Math.min((now-state.last)/1000,.1);state.last=now;state.time-=dt;updateTimer();if(state.time<=0)timeoutQuestion()}drawScene()}requestAnimationFrame(tick)}
 function endGame(win){state.active=false;clearInterval(state.clock);$('question').style.display='none';$('battleUI').style.display='none';$('result').style.display='grid';$('resultTitle').textContent=win?'🏆 O REINO ESTÁ SALVO!':'☠ SUA JORNADA TERMINOU';$('resultText').textContent=win?state.name+', você derrotou os três guardiões e restaurou a crase no reino! Foram '+state.hits+' respostas corretas. Sua lenda será lembrada!':'Os guardiões venceram desta vez, '+state.name+'. Você acertou '+state.hits+' perguntas. Reúna coragem e tente novamente!';}
 $('startBtn').onclick=startGame;$('againBtn').onclick=()=>{state.active=false;$('result').style.display='none';$('intro').style.display='grid';$('battleUI').style.display='none';};
 drawScene();requestAnimationFrame(tick);
