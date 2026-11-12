@@ -13,7 +13,7 @@
 #battleUI{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(9px,2vw,18px)}
 .bossinfo{align-self:center;width:min(390px,78%);text-align:center;text-shadow:2px 2px #17121d}.bossname{font-size:clamp(13px,2.2vw,19px);color:#ffe1a0;font-weight:bold;letter-spacing:1px}.bosstitle{font-size:10px;color:#ead7c0;margin:3px 0 7px}.bar{height:13px;background:#241c28;border:2px solid #d6b77b;padding:1px}.fill{height:100%;background:linear-gradient(90deg,#b63e48,#e66a56);width:100%;transition:width .2s}
 .playerinfo{display:flex;justify-content:space-between;align-items:end;font-size:11px;text-shadow:2px 2px #17121d}.playerinfo>div:first-child{background:linear-gradient(135deg,rgba(35,58,70,.96),rgba(24,42,51,.96));border:3px solid #e5c783;box-shadow:4px 4px 0 #273b43;padding:9px 15px;min-width:170px}.hero-rank{font-size:9px;color:#f4d98e;letter-spacing:1px}.hero-name{font-size:clamp(16px,2.6vw,23px);font-weight:1000;color:#fff4d2;letter-spacing:1px;margin:3px 0}.hearts{color:#ff8277;letter-spacing:3px;font-size:17px}.timerwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(260px,42%);background:#211d2acc;border:2px solid #e3c47d;padding:5px;opacity:.96}.timerlabel{text-align:center;font-size:10px;color:#ffe4a5;margin-bottom:3px}.timerbar{height:9px;background:#4c2935}.timerfill{height:100%;width:100%;background:#e8c66d;transition:width .12s linear}
-#question{position:absolute;left:50%;bottom:clamp(8px,2vw,18px);transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:transparent;border:0;box-shadow:none;padding:0 8px;pointer-events:none;text-align:center;text-shadow:3px 3px 2px #243747,-1px -1px 1px #243747}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.8vw,23px);line-height:1.35;margin:0 auto 9px;color:#fff8e7;max-width:700px}.answers{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:auto}.answers button{background:linear-gradient(#f4dfae,#d7b77d);border:3px solid #77543a;border-bottom-width:5px;color:#3c3028;padding:9px 13px;text-align:center;font:bold 12px ui-monospace,monospace;cursor:pointer;border-radius:3px;min-width:110px;box-shadow:2px 3px 0 #253c47}.answers button:hover:not(:disabled){background:#4a3b56;border-color:var(--gold)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:24px;color:#fff0bd;font-size:11px;line-height:1.4;margin-top:5px}
+#question{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:none;place-items:center;padding:0;z-index:5;pointer-events:none}.qpanel{width:100%;background:rgba(32,53,57,.94);border:2px solid #e6c98e;box-shadow:0 4px 0 rgba(45,57,50,.5);padding:8px 12px;pointer-events:none;text-align:center;text-shadow:1px 2px #263e46}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.8vw,23px);line-height:1.35;margin:0 auto 9px;color:#fff8e7;max-width:700px}.answers{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;pointer-events:auto}.answers button{background:linear-gradient(#fff0c8,#dfbd82);border:3px solid #77543a;border-bottom-width:5px;color:#3c3028;padding:9px 13px;text-align:center;font:bold 12px ui-monospace,monospace;cursor:pointer;border-radius:3px;min-width:110px;box-shadow:2px 3px 0 #253c47}.answers button:hover:not(:disabled){background:linear-gradient(#fff8dd,#edce91);border-color:#fff0c8;transform:translateY(-2px)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:24px;color:#fff0bd;font-size:11px;line-height:1.4;margin-top:5px}
 #result{display:none;position:absolute;inset:0;z-index:6;background:#151320ed;place-items:center;padding:14px}.resultpanel{width:min(520px,100%);background:#302941;border:3px solid var(--gold);padding:24px;text-align:center;box-shadow:7px 7px #100e18}.resultpanel h2{color:var(--gold)}.resultpanel p{font-size:13px;line-height:1.6}
 @media(max-width:600px){body{padding:8px}.hud{width:100%}.chip{font-size:10px;padding:6px}.timerwrap{top:55%;width:38%}.playerinfo{font-size:9px}.hearts{font-size:14px}}
 </style>
@@ -112,53 +112,50 @@ function drawBoss(x,y,index){const b=bosses[index],col=b.armor;
  if(index===2){rect(x+74,y+7,7,52,'#7a583e');rect(x+65,y+4,25,15,'#d4b15d');rect(x+66,y+4,7,15,'#e4d3a2');}
 }
 function drawScene(){
- // Bright 16-bit daytime kingdom: layered sky, clouds, distant mountains and detailed castle courtyard
- const sky=ctx.createLinearGradient(0,0,0,450);sky.addColorStop(0,'#55b9e9');sky.addColorStop(.48,'#9bd9e5');sky.addColorStop(1,'#f4d5a0');ctx.fillStyle=sky;ctx.fillRect(0,0,800,450);
- // sun
- rect(674,42,58,58,'#ffe58a');rect(684,32,38,78,'#ffe58a');rect(664,52,78,38,'#ffe58a');rect(682,50,42,42,'#fff2b5');
- // layered clouds
- for(const [x,y] of [[70,70],[280,105],[490,55],[590,145]]){rect(x,y+10,76,18,'#fff8e7');rect(x+14,y,42,28,'#fff8e7');rect(x+26,y-6,26,12,'#fffdf3');rect(x-8,y+18,92,8,'#d5eff0')}
- // distant green mountains
- for(let i=0;i<6;i++){let x=i*155-30;ctx.fillStyle=i%2?'#83b99a':'#6ca98e';ctx.beginPath();ctx.moveTo(x,300);ctx.lineTo(x+88,145+(i%3)*22);ctx.lineTo(x+180,300);ctx.fill();rect(x+76,190,16,18,'#e8f1dc')}
- // far hills and trees
- rect(0,278,800,72,'#83bd78');rect(0,300,800,50,'#69a968');
- for(let i=0;i<10;i++){let x=i*91+8;rect(x+12,245,12,55,'#805b42');rect(x,220,36,36,'#39865c');rect(x+6,207,25,28,'#4b9c65');rect(x+4,239,28,12,'#72b96b')}
- // castle stone walls with towers, roofs, windows and banners
- rect(205,205,390,145,'#c9b99a');rect(220,190,360,18,'#e5d5b5');
- rect(235,140,68,210,'#d7c7a6');rect(497,140,68,210,'#d7c7a6');
- rect(225,125,88,20,'#b7a487');rect(487,125,88,20,'#b7a487');
- for(let x=230;x<585;x+=28){rect(x,178,15,17,'#e6d7b9')}
- // crenellations
- for(let x=215;x<590;x+=32){rect(x,184,19,17,'#c9b99a')}
- // tower roofs
- ctx.fillStyle='#b34f4b';ctx.beginPath();ctx.moveTo(225,140);ctx.lineTo(269,72);ctx.lineTo(313,140);ctx.fill();ctx.beginPath();ctx.moveTo(487,140);ctx.lineTo(531,72);ctx.lineTo(575,140);ctx.fill();
- rect(260,82,17,52,'#e8d9b8');rect(522,82,17,52,'#e8d9b8');
- // windows and gate
- for(let x of [249,277,511,539]){rect(x,155,13,25,'#41627b');rect(x+3,155,3,25,'#9ed2dc')}
- rect(365,266,70,84,'#604a43');rect(375,277,50,73,'#2e4051');rect(394,277,12,73,'#d9b77a');rect(360,258,80,10,'#e6d2a9');
- // banners
- rect(330,200,7,52,'#795b3d');rect(337,205,27,30,'#b9434a');rect(436,200,7,52,'#795b3d');rect(443,205,27,30,'#416c9d');
- // foreground grass and stone arena
- rect(0,348,800,102,'#69a75e');rect(0,365,800,85,'#8cbd70');rect(0,386,800,64,'#b9a17a');
- for(let x=0;x<800;x+=64){rect(x,386,58,4,'#d6c19a');rect(x+25,408,4,19,'#a58d6c');rect(x+8,436,25,3,'#9d8768')}
- // flowers and shrubs
- for(let i=0;i<24;i++){let x=(i*67+19)%790;rect(x,373+(i%3)*17,4,4,i%2?'#f6d66e':'#f4e9df');rect(x+3,378+(i%3)*17,4,5,'#478b50')}
- // arena props: barrels, shields, flags
- rect(95,338,27,39,'#8b5c3e');rect(91,334,35,7,'#c28b53');rect(99,348,4,27,'#d5a45f');rect(674,342,27,35,'#8b5c3e');rect(670,337,35,7,'#c28b53');
- // Characters move in real time while the question stays on screen
- if(state.active){if(keys.arrowleft||keys.a){state.heroX=Math.max(65,state.heroX-2.8);state.heroDir=-1}else if(keys.arrowright||keys.d){state.heroX=Math.min(390,state.heroX+2.8);state.heroDir=1}if(state.jumpV!==undefined){state.heroY=(state.heroY||352)+state.jumpV;state.jumpV+=.38;if(state.heroY>=352){state.heroY=352;state.jumpV=undefined}}}
- const hy=state.heroY||352;drawHero(state.heroX,hy);drawBoss(510,335+Math.sin(performance.now()/380)*2,state.boss);
- text(state.name||'Cavaleiro',state.heroX+18,hy-9,10,'#263a48','center');text(bosses[state.boss].name,548,318,12,'#49313a','center');
- // richer 16-bit highlights, stone joints, flower clusters and sunlit edges
- for(let x=212;x<590;x+=38){rect(x,211,22,3,'#e9dcc0');rect(x+4,239,14,3,'#aa987e');}
- for(let x=0;x<800;x+=37){rect(x,374+(x%4)*3,3,8,'#4d9154');rect(x+7,379+(x%3)*4,4,4,'#f7d47b');}
- rect(0,344,800,5,'#8dc66e');rect(0,381,800,4,'#d9c49a');
- // small pennants and warm highlights
- rect(331,204,5,25,'#e7c477');rect(443,204,5,25,'#e7c477');
- // small instruction sign
- rect(18,20,150,27,'#fff3d4');text('← → MOVER  ESPAÇO PULAR',93,38,9,'#36536a','center');
-}
-function updateHud(){
+ // Original painterly pixel-fantasy look: luminous skies, rich foliage, layered parallax-like scenery
+ const sky=ctx.createLinearGradient(0,0,0,450);sky.addColorStop(0,'#4b9ed0');sky.addColorStop(.42,'#8ec8d1');sky.addColorStop(.76,'#e7cda0');sky.addColorStop(1,'#f3d59b');ctx.fillStyle=sky;ctx.fillRect(0,0,800,450);
+ // sun and soft pixel glow
+ ctx.fillStyle='rgba(255,232,168,.18)';ctx.beginPath();ctx.arc(690,82,105,0,Math.PI*2);ctx.fill();rect(671,44,48,48,'#ffe7a6');rect(680,35,30,66,'#ffe7a6');rect(660,53,70,28,'#ffe7a6');rect(683,55,25,25,'#fff6d3');
+ // soft pixel clouds
+ for(const [x,y,w] of [[45,76,105],[270,120,115],[510,63,100],[640,160,82]]){rect(x+12,y+12,w,18,'#f8f2df');rect(x+28,y,w-40,30,'#fff8e8');rect(x+49,y-8,27,15,'#fffaf0');rect(x+3,y+20,w+20,8,'#d5e9df');}
+ // far blue mountains with snowy ridges
+ for(let i=0;i<7;i++){let x=i*140-50,peak=145+(i%3)*24;ctx.fillStyle=i%2?'#668e9a':'#587f91';ctx.beginPath();ctx.moveTo(x,315);ctx.lineTo(x+83,peak);ctx.lineTo(x+171,315);ctx.fill();ctx.fillStyle='#d8e4d4';ctx.beginPath();ctx.moveTo(x+62,peak+40);ctx.lineTo(x+83,peak);ctx.lineTo(x+107,peak+43);ctx.lineTo(x+92,peak+34);ctx.lineTo(x+82,peak+48);ctx.fill();}
+ // rolling hills, layered tree lines
+ rect(0,264,800,105,'#78a77d');rect(0,294,800,77,'#5f9470');rect(0,317,800,45,'#477c63');
+ for(let i=0;i<17;i++){let x=i*51-10,y=240+(i%4)*15;rect(x+14,y+24,9,55,'#755641');rect(x,y+8,38,39,i%2?'#386f59':'#477e5c');rect(x+5,y-4,29,28,'#5b9665');rect(x+7,y+16,24,7,'#79ad70');}
+ // castle town behind arena
+ rect(195,191,410,150,'#bda98a');rect(208,178,385,18,'#e2d2ad');
+ // wings and round towers
+ rect(224,125,78,220,'#d4c19d');rect(498,125,78,220,'#d4c19d');rect(216,116,94,17,'#a98c6e');rect(490,116,94,17,'#a98c6e');
+ // roofs with layered red tiles
+ ctx.fillStyle='#984c4d';ctx.beginPath();ctx.moveTo(208,125);ctx.lineTo(263,45);ctx.lineTo(318,125);ctx.fill();ctx.fillStyle='#bd6860';ctx.beginPath();ctx.moveTo(220,122);ctx.lineTo(263,61);ctx.lineTo(306,122);ctx.fill();
+ ctx.fillStyle='#984c4d';ctx.beginPath();ctx.moveTo(482,125);ctx.lineTo(537,45);ctx.lineTo(592,125);ctx.fill();ctx.fillStyle='#bd6860';ctx.beginPath();ctx.moveTo(494,122);ctx.lineTo(537,61);ctx.lineTo(580,122);ctx.fill();
+ // central keep
+ rect(328,145,144,198,'#d9c7a4');rect(316,136,168,15,'#a98e70');ctx.fillStyle='#a24f50';ctx.beginPath();ctx.moveTo(315,138);ctx.lineTo(400,66);ctx.lineTo(485,138);ctx.fill();rect(392,76,16,60,'#e7d3ae');
+ // battlements and stone texture
+ for(let x=203;x<604;x+=27){rect(x,172,17,18,'#d9c7a4');rect(x+3,175,11,4,'#eee0bf');}
+ for(let x=220;x<580;x+=35){rect(x,210,21,4,'#b09c7e');rect(x+5,245,17,3,'#eee0bf');}
+ // stained-glass windows
+ for(let x of [241,276,514,549,355,430]){rect(x,158,16,31,'#456f82');rect(x+3,161,4,25,'#a6d5ce');rect(x+9,161,4,25,'#8e9fba');rect(x+7,158,2,31,'#e8d5ac');}
+ // gatehouse, arch, portcullis
+ rect(366,257,68,88,'#80604b');rect(375,269,50,76,'#324d5c');rect(395,269,10,76,'#d6b978');rect(360,249,80,11,'#ead9b6');for(let x=381;x<422;x+=9)rect(x,276,3,69,'#9a805d');
+ // flags and hanging ivy
+ rect(337,182,5,64,'#77553b');rect(342,188,30,34,'#b34f55');rect(342,188,30,5,'#f0d18c');rect(458,182,5,64,'#77553b');rect(463,188,30,34,'#4e7799');rect(463,188,30,5,'#f0d18c');
+ for(let i=0;i<9;i++){let x=205+i*47;rect(x,276+(i%3)*9,4,17,'#477b54');rect(x-5,285+(i%3)*9,7,5,'#6d9b61');}
+ // arena grounds: separate open combat stage from answer controls below
+ rect(0,333,800,117,'#65915e');rect(0,348,800,102,'#8eae73');rect(0,365,800,85,'#b69c75');rect(0,365,800,6,'#e1c99c');
+ for(let x=0;x<800;x+=56){rect(x,376,52,4,'#d7c19a');rect(x+22,380,4,19,'#9a8668');rect(x+4,419,25,3,'#9a8568');}
+ // flowers and grass tufts
+ for(let i=0;i<50;i++){let x=(i*43+17)%790,y=340+(i%6)*13;rect(x,y,4,5,i%3?'#f3e5c5':'#f4cc75');rect(x+4,y+4,5,5,'#438255');}
+ // props pushed to far edges
+ rect(78,304,28,42,'#865b43');rect(73,300,38,7,'#c18d57');rect(86,311,5,29,'#d8ad6c');rect(692,307,28,39,'#865b43');rect(687,302,38,7,'#c18d57');
+ // Actors stay in a clear combat lane above the question choices
+ if(state.active){if(keys.arrowleft||keys.a){state.heroX=Math.max(65,state.heroX-2.8);state.heroDir=-1}else if(keys.arrowright||keys.d){state.heroX=Math.min(390,state.heroX+2.8);state.heroDir=1}if(state.jumpV!==undefined){state.heroY=(state.heroY||270)+state.jumpV;state.jumpV+=.38;if(state.heroY>=270){state.heroY=270;state.jumpV=undefined}}}
+ const hy=state.heroY||270;drawHero(state.heroX,hy);drawBoss(510,250+Math.sin(performance.now()/380)*2,state.boss);
+ text(state.name||'Cavaleiro',state.heroX+18,hy-9,10,'#203d4b','center');text(bosses[state.boss].name,548,234,12,'#49313a','center');
+ // control hint plaque
+ rect(18,18,168,28,'rgba(255,248,226,.92)');text('← → MOVER   ESPAÇO PULAR',102,37,9,'#36536a','center');
+}function updateHud(){
  const b=bosses[state.boss];$('phase').textContent=(state.boss+1)+'/3';$('livesTop').textContent=state.lives;$('hitsTop').textContent=state.hits;
  $('bossName').textContent=b.name;$('bossTitle').textContent=b.title;$('bossHP').textContent=state.bossHP+' / '+b.hp+' vidas';$('bossFill').style.width=(state.bossHP/b.hp*100)+'%';
  $('hearts').textContent='♥ '.repeat(state.lives).trim()||'—';$('heroLabel').textContent=state.name;
