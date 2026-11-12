@@ -1,75 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>A Maldição do Acento Grave</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crônicas da Crase — A Batalha dos Três Chefes</title>
 <style>
-:root{--ink:#211b2b;--cream:#f6edda;--gold:#f4c66a;--red:#b64c43;--green:#8da875}
-*{box-sizing:border-box}body{margin:0;background:#171522;color:var(--cream);font-family:ui-monospace,Consolas,monospace;min-height:100vh;display:grid;place-items:center;padding:18px}
-.wrap{width:min(960px,100%)}header{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 0 12px}h1{font-size:clamp(20px,4vw,34px);margin:0;color:var(--gold);text-shadow:3px 3px #6e3d3c}.sub{font-size:12px;color:#bdb2c9;margin-top:6px}.hud{display:flex;gap:8px;flex-wrap:wrap;justify-content:end}.pill{background:#292438;border:1px solid #55465f;padding:8px 11px;border-radius:8px;font-size:12px}
-.stage{position:relative;border:4px solid #67506b;border-radius:12px;overflow:hidden;background:#27243b;box-shadow:0 14px 50px #0009}
-canvas{display:block;width:100%;image-rendering:pixelated;touch-action:none}
-.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#171522d9;padding:18px;text-align:center}.panel{max-width:520px;background:#292438;border:2px solid #92705f;border-radius:12px;padding:24px;box-shadow:7px 7px #110f19}.panel h2{color:var(--gold);margin:0 0 10px}.panel p{line-height:1.6;color:#e1d6c5}.btn{border:0;border-radius:8px;padding:12px 18px;background:var(--gold);color:#251d2b;font: bold 14px inherit;cursor:pointer;margin:5px}.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.small{font-size:11px;color:#bdb2c9}
-#question{display:none;position:absolute;inset:0;background:#171522eF;place-items:center;padding:14px}.answers{display:grid;gap:8px;margin-top:16px}.answers button{background:#3a3249;border:1px solid #78617e;color:#fff;padding:12px;border-radius:7px;text-align:left;cursor:pointer;font:inherit}.answers button:hover{background:#55435f}.feedback{min-height:22px;color:var(--gold);font-size:13px;margin-top:12px}
-.controls{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}.touch{display:none;gap:8px}.touch button{width:48px;height:42px;background:#332b42;color:white;border:1px solid #766080;border-radius:8px;font-size:18px}
-@media(max-width:650px){header{align-items:start;flex-direction:column}.hud{justify-content:start}.touch{display:flex}.sub{font-size:10px}}
+:root{--bg:#171522;--panel:#282438;--line:#756080;--gold:#f4cc72;--paper:#f5e7c8;--red:#c6534e;--green:#8eb77b;--muted:#bdb3c7}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#37304b,#171522 70%);color:var(--paper);font-family:ui-monospace,Consolas,monospace;padding:18px;display:grid;place-items:center}
+.app{width:min(1000px,100%)}header{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px;flex-wrap:wrap}h1{margin:0;color:var(--gold);font-size:clamp(21px,4vw,36px);text-shadow:3px 3px #69404b;letter-spacing:1px}.tag{color:var(--muted);font-size:11px;margin-top:6px}.hud{display:flex;gap:8px;flex-wrap:wrap}.chip{background:#2c273b;border:2px solid #665477;border-radius:5px;padding:8px 11px;font-size:12px}
+.gameframe{position:relative;border:4px solid #79627b;border-radius:8px;overflow:hidden;background:#27243b;box-shadow:0 15px 50px #0009}canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+.screen{position:absolute;inset:0;display:grid;place-items:center;background:#151320eF;padding:15px;overflow:auto}.panel{width:min(570px,100%);background:#2c273d;border:3px solid #8a7180;box-shadow:7px 7px #100e18;padding:clamp(16px,4vw,27px);text-align:center}.panel h2{color:var(--gold);margin:0 0 12px;font-size:clamp(19px,3vw,27px)}.panel p{line-height:1.55;color:#e1d6c5;font-size:13px}.field{display:grid;gap:7px;text-align:left;margin:14px 0}.field label{font-size:12px;color:var(--gold)}input[type=text]{width:100%;background:#181622;border:2px solid #77627f;color:white;padding:12px;font:inherit;border-radius:4px}.gender{display:flex;gap:10px}.gender label{flex:1;border:2px solid #6d5b78;background:#211e30;padding:11px;border-radius:4px;text-align:center;cursor:pointer;color:#eee}.gender input{accent-color:#e4b65e}.gender label:has(input:checked){border-color:var(--gold);background:#40364b}.btn{border:0;background:var(--gold);color:#211b2b;font: bold 14px ui-monospace,monospace;padding:13px 18px;cursor:pointer;border-radius:4px;box-shadow:0 4px #a47746;margin-top:10px}.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.btn:active{transform:translateY(2px);box-shadow:0 2px #a47746}.small{font-size:10px;color:var(--muted);line-height:1.5}
+#battleUI{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(9px,2vw,18px)}
+.bossinfo{align-self:center;width:min(390px,78%);text-align:center;text-shadow:2px 2px #17121d}.bossname{font-size:clamp(13px,2.2vw,19px);color:#ffe1a0;font-weight:bold;letter-spacing:1px}.bosstitle{font-size:10px;color:#ead7c0;margin:3px 0 7px}.bar{height:13px;background:#241c28;border:2px solid #d6b77b;padding:1px}.fill{height:100%;background:linear-gradient(90deg,#b63e48,#e66a56);width:100%;transition:width .2s}
+.playerinfo{display:flex;justify-content:space-between;align-items:end;font-size:11px;text-shadow:2px 2px #17121d}.hearts{color:#ff8277;letter-spacing:3px;font-size:17px}.timerwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(260px,42%);background:#211d2acc;border:2px solid #e3c47d;padding:5px;opacity:.96}.timerlabel{text-align:center;font-size:10px;color:#ffe4a5;margin-bottom:3px}.timerbar{height:9px;background:#4c2935}.timerfill{height:100%;width:100%;background:#e8c66d;transition:width .12s linear}
+#question{position:absolute;inset:0;display:none;place-items:center;background:#151320eF;padding:12px;z-index:5}.qpanel{width:min(600px,100%);background:#302941;border:3px solid #d0ad70;box-shadow:7px 7px #100e18;padding:clamp(15px,3vw,25px)}.qtop{display:flex;justify-content:space-between;gap:10px;color:var(--gold);font-size:11px;margin-bottom:12px}.qpanel h3{font-size:clamp(15px,2.6vw,21px);line-height:1.5;margin:0 0 15px}.answers{display:grid;gap:8px}.answers button{background:#211e30;border:2px solid #75627c;color:#f6ead2;padding:12px;text-align:left;font:12px ui-monospace,monospace;cursor:pointer;border-radius:3px}.answers button:hover:not(:disabled){background:#4a3b56;border-color:var(--gold)}.answers button:disabled{opacity:.55;cursor:default}.feedback{min-height:35px;color:var(--gold);font-size:11px;line-height:1.5;margin-top:12px}
+#result{display:none;position:absolute;inset:0;z-index:6;background:#151320ed;place-items:center;padding:14px}.resultpanel{width:min(520px,100%);background:#302941;border:3px solid var(--gold);padding:24px;text-align:center;box-shadow:7px 7px #100e18}.resultpanel h2{color:var(--gold)}.resultpanel p{font-size:13px;line-height:1.6}
+@media(max-width:600px){body{padding:8px}.hud{width:100%}.chip{font-size:10px;padding:6px}.timerwrap{top:55%;width:38%}.playerinfo{font-size:9px}.hearts{font-size:14px}}
 </style>
 </head>
-<body><main class="wrap">
-<header><div><h1>A MALDIÇÃO DO ACENTO GRAVE</h1><div class="sub">Uma aventura de plataforma • Capítulo I: O Caminho da Crase</div></div><div class="hud"><div class="pill">✦ Fragmentos: <b id="score">0/3</b></div><div class="pill">♥ Vidas: <b id="lives">3</b></div><div class="pill">Nível: <b id="level">1</b></div></div></header>
-<div class="stage"><canvas id="game" width="800" height="440" aria-label="Jogo de plataforma"></canvas>
-<div class="overlay" id="intro"><div class="panel"><h2>O reino perdeu o acento...</h2><p>Uma névoa tomou conta do reino e apagou a crase de placas, mapas e antigos pergaminhos. Atravesse as ruínas, reúna os três fragmentos e prove que sabe quando usar o acento grave.</p><p><b>← →</b> mover &nbsp; <b>ESPAÇO</b> pular<br>Encontre os fragmentos dourados e alcance o portal.</p><button class="btn" id="start">COMEÇAR A AVENTURA</button><div class="small">Dica: você pode pular sobre os obstáculos. Não caia nas fendas!</div></div></div>
-<div id="question"><div class="panel"><h2>O selo da crase</h2><p id="qtext"></p><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div></div></div>
+<body><main class="app">
+<header><div><h1>CRÔNICAS DA CRASE</h1><div class="tag">A BATALHA DOS TRÊS CHEFES • RPG MEDIEVAL 8-BIT</div></div><div class="hud"><div class="chip">⚔ Fase <b id="phase">1/3</b></div><div class="chip">♥ Vidas <b id="livesTop">3</b></div><div class="chip">✦ Acertos <b id="hitsTop">0</b></div></div></header>
+<div class="gameframe"><canvas id="scene" width="800" height="450"></canvas>
+<div id="battleUI" style="display:none"><div class="bossinfo"><div class="bossname" id="bossName">O Cavaleiro Sem Crase</div><div class="bosstitle" id="bossTitle">Guardião do Portão</div><div class="bar"><div class="fill" id="bossFill"></div></div><div class="small" id="bossHP">2 / 2 vidas</div></div><div class="timerwrap"><div class="timerlabel">TEMPO DA PERGUNTA: <b id="timerText">30</b>s</div><div class="timerbar"><div class="timerfill" id="timerFill"></div></div></div><div class="playerinfo"><div><div id="heroLabel">Cavaleiro</div><div class="hearts" id="hearts">♥ ♥ ♥</div></div><div>ARENA REAL<br><span class="small">Derrote os três guardiões</span></div></div></div>
+<div class="screen" id="intro"><div class="panel"><h2>⚔ A LENDA DO ACENTO PERDIDO ⚔</h2><p>O reino de Gramática foi tomado por três guardiões que roubaram os sinais sagrados da escrita. Para restaurar a paz, você deverá vencê-los em duelos de conhecimento.</p><p><b>Acertou:</b> o chefe perde 1 vida. <b>Errou ou o tempo acabou:</b> você perde 1 vida. Você tem 3 vidas para vencer os três chefes.</p>
+<div class="field"><label for="heroName">NOME DO(A) CAVALEIRO(A)</label><input id="heroName" type="text" maxlength="16" placeholder="Digite seu nome..." value="Arthur"></div>
+<div class="field"><label>ESCOLHA SEU PERSONAGEM</label><div class="gender"><label><input type="radio" name="gender" value="male" checked> ⚔ Homem</label><label><input type="radio" name="gender" value="female"> 🛡 Mulher</label></div></div>
+<button class="btn" id="startBtn">INICIAR JORNADA</button><p class="small">Cada pergunta tem 30 segundos. A barra reinicia após cada resposta.</p></div></div>
+<div id="question"><div class="qpanel"><div class="qtop"><span id="qBoss">DUELO 1</span><span>⏳ <b id="qTime">30</b>s</span></div><h3 id="qText"></h3><div class="answers" id="answerList"></div><div class="feedback" id="qFeedback"></div></div></div>
+<div id="result"><div class="resultpanel"><h2 id="resultTitle"></h2><p id="resultText"></p><button class="btn" id="againBtn">JOGAR NOVAMENTE</button></div></div>
 </div>
-<div class="controls"><div class="small">Teclas: ← → para andar • Espaço ou ↑ para pular</div><div class="touch"><button id="left">◀</button><button id="jump">▲</button><button id="right">▶</button></div></div>
+<p class="small" style="text-align:center;margin-top:10px">Dica: leia com atenção. A crase aparece quando a preposição “a” se encontra com o artigo feminino “a”.</p>
 </main>
 <script>
-const c=document.getElementById('game'),ctx=c.getContext('2d');
-const scoreEl=document.getElementById('score'),livesEl=document.getElementById('lives'),levelEl=document.getElementById('level');
-const intro=document.getElementById('intro'),question=document.getElementById('question');
-const W=800,H=440,world=1800;
-let keys={},camera=0,score=0,lives=3,started=false,paused=false,won=false,frame=0;
-let player={x:55,y:300,w:26,h:34,vx:0,vy:0,on:false,inv:0};
-let platforms=[],shards=[],hazards=[],gate={x:1680,y:290,w:46,h:90};
-const qs=[
-{q:'Complete: “Vou ___ biblioteca depois da aula.”',a:['a biblioteca','à biblioteca','há biblioteca'],ok:1,why:'Quem vai, vai a algum lugar. “Biblioteca” pede artigo feminino: a + a = à.'},
-{q:'Em qual frase a crase está correta?',a:['Cheguei à escola cedo.','Entreguei o livro à ele.','Começou à chover.'],ok:0,why:'“Chegar a” + “a escola” = à escola. Não se usa crase antes de verbo ou pronome pessoal.'},
-{q:'Complete: “O evento começa ___ partir das oito.”',a:['a','à','há'],ok:0,why:'Antes de “partir” (verbo), não ocorre crase: a partir.'},
-{q:'Qual opção completa corretamente: “Ela se referiu ___ professora.”',a:['a','à','há'],ok:1,why:'“Referir-se a” + “a professora” = à professora.'}
+const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+const bosses=[
+{name:'SIR BRAGANT',title:'O Sentinela do Portão',hp:2,color:'#9c4b45',armor:'#a7a8b4',weapon:'sword'},
+{name:'DUQUESA MORGANA',title:'A Feiticeira das Palavras',hp:5,color:'#684b91',armor:'#7860a0',weapon:'staff'},
+{name:'REI GRAMMOR',title:'O Tirano da Crase',hp:7,color:'#b18a3d',armor:'#d1aa53',weapon:'axe'}
 ];
-let qIndex=0;
-function build(){platforms=[{x:0,y:380,w:260,h:60},{x:310,y:340,w:170,h:100},{x:525,y:300,w:155,h:140},{x:720,y:355,w:180,h:85},{x:945,y:315,w:160,h:125},{x:1145,y:270,w:170,h:170},{x:1360,y:340,w:170,h:100},{x:1570,y:380,w:230,h:60}];
-shards=[{x:180,y:330,taken:false},{x:590,y:250,taken:false},{x:1220,y:220,taken:false}];
-hazards=[{x:270,y:365,w:34,h:15},{x:690,y:365,w:26,h:15},{x:910,y:365,w:28,h:15},{x:1320,y:365,w:28,h:15},{x:1535,y:365,w:25,h:15}];}
-build();
-function resetPlayer(){player.x=55;player.y=300;player.vx=player.vy=0;player.inv=75}
-function start(){intro.style.display='none';started=true;requestAnimationFrame(loop)}
-document.getElementById('start').onclick=start;
-function key(e,down){if(['ArrowLeft','ArrowRight','ArrowUp','Space'].includes(e.code))e.preventDefault();keys[e.code]=down;if(down&&(e.code==='Space'||e.code==='ArrowUp')&&player.on&&!paused)player.vy=-11.5}
-addEventListener('keydown',e=>key(e,true));addEventListener('keyup',e=>key(e,false));
-[['left','ArrowLeft'],['right','ArrowRight'],['jump','Space']].forEach(([id,k])=>{let b=document.getElementById(id);b.onpointerdown=e=>{e.preventDefault();keys[k]=true;if(k==='Space'&&player.on)player.vy=-11.5};b.onpointerup=b.onpointerleave=()=>keys[k]=false});
-function hit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
-function hurt(){if(player.inv>0)return;lives--;livesEl.textContent=lives;if(lives<=0){paused=true;showEnd(false)}else resetPlayer()}
-function openQuestion(){paused=true;let q=qs[qIndex%qs.length];document.getElementById('qtext').textContent=q.q;document.getElementById('feedback').textContent='';let box=document.getElementById('answers');box.innerHTML='';q.a.forEach((a,i)=>{let b=document.createElement('button');b.textContent='▸ '+a;b.onclick=()=>{if(i===q.ok){document.getElementById('feedback').textContent='✓ '+q.why;box.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(()=>{question.style.display='none';paused=false;won=true;showEnd(true)},1200)}else{document.getElementById('feedback').textContent='Ainda não! Pense na regência do verbo.';lives--;livesEl.textContent=lives;if(lives<=0)setTimeout(()=>{question.style.display='none';showEnd(false)},700)}};box.appendChild(b)});question.style.display='grid'}
-function showEnd(win){intro.style.display='grid';intro.querySelector('h2').textContent=win?'O selo foi restaurado!':'A névoa venceu...';intro.querySelector('p').textContent=win?'Você atravessou as ruínas e dominou o primeiro selo da crase. O reino ainda precisa de você!':'Suas vidas acabaram. Respire fundo e tente mais uma vez.';intro.querySelectorAll('p')[1].textContent=win?'Fragmentos reunidos: '+score+'/3':'Dica: use os saltos para passar pelos espinhos e não tenha pressa.';document.getElementById('start').textContent=win?'JOGAR NOVAMENTE':'TENTAR DE NOVO';document.getElementById('start').onclick=()=>{score=0;lives=3;qIndex=0;won=false;scoreEl.textContent='0/3';livesEl.textContent='3';build();resetPlayer();intro.style.display='none';paused=false;started=true;requestAnimationFrame(loop)}}
-function draw(){ctx.clearRect(0,0,W,H);let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#34314d');g.addColorStop(1,'#746078');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-ctx.save();ctx.translate(-camera,0);
-// distant mountains
-for(let i=0;i<12;i++){let x=i*190;ctx.fillStyle=i%2?'#49445d':'#57506a';ctx.beginPath();ctx.moveTo(x,350);ctx.lineTo(x+90,130+(i%3)*35);ctx.lineTo(x+190,350);ctx.fill();}
-// stars / ruins
-for(let i=0;i<24;i++){let x=i*83+20;ctx.fillStyle='#e7c88a';ctx.fillRect(x,55+(i*31)%100,3,3)}
-platforms.forEach(p=>{ctx.fillStyle='#382e42';ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle='#9b806e';ctx.fillRect(p.x,p.y,p.w,8);ctx.fillStyle='#594658';for(let x=p.x+12;x<p.x+p.w;x+=35)ctx.fillRect(x,p.y+17,3,15)});
-hazards.forEach(h=>{ctx.fillStyle='#d66a55';ctx.beginPath();ctx.moveTo(h.x,h.y+h.h);ctx.lineTo(h.x+h.w/2,h.y-13);ctx.lineTo(h.x+h.w,h.y+h.h);ctx.fill()});
-shards.forEach(s=>{if(!s.taken){ctx.save();ctx.translate(s.x,s.y);ctx.rotate(Math.PI/4);ctx.fillStyle='#f8d477';ctx.fillRect(-8,-8,16,16);ctx.strokeStyle='#fff0b3';ctx.strokeRect(-8,-8,16,16);ctx.restore()}});
-ctx.fillStyle='#b98c68';ctx.fillRect(gate.x,gate.y,gate.w,gate.h);ctx.fillStyle='#f4cf78';ctx.fillRect(gate.x+9,gate.y+10,gate.w-18,gate.h-10);ctx.fillStyle='#3a2d49';ctx.fillRect(gate.x+16,gate.y+35,14,55);
-// hero
-if(player.inv%10<7){ctx.fillStyle='#272333';ctx.fillRect(player.x+4,player.y+7,18,27);ctx.fillStyle='#e5bd87';ctx.fillRect(player.x+5,player.y,17,15);ctx.fillStyle='#a94f49';ctx.fillRect(player.x+2,player.y+16,22,8);ctx.fillStyle='#d9c6a4';ctx.fillRect(player.x+3,player.y+29,8,5);ctx.fillRect(player.x+16,player.y+29,8,5)}
-ctx.restore();
-ctx.fillStyle='#fff0d2';ctx.font='12px monospace';ctx.fillText('RUÍNAS DO VELHO PORTUGUÊS',18,24);
+const questions=[
+{q:'Complete: “Vou ___ escola todos os dias.”',a:['a','à','há','as'],ok:1,why:'“Ir a” + “a escola” = à escola.'},
+{q:'Em qual frase a crase está empregada corretamente?',a:['Entreguei o mapa à ela.','Começou à chover cedo.','Cheguei à cidade ao amanhecer.','Fui à pé até o castelo.'],ok:2,why:'“Chegar a” + “a cidade” = à cidade. Não há crase antes de verbo, pronome pessoal ou na expressão “a pé”.'},
+{q:'Complete: “O cavaleiro voltou ___ noite.”',a:['a','à','há','as'],ok:1,why:'Na expressão adverbial feminina “à noite”, usa-se crase.'},
+{q:'Assinale a alternativa correta.',a:['O mensageiro entregou a carta à rainha.','O mensageiro obedeceu à seu mestre.','O soldado ficou frente à frente.','A princesa começou à falar.'],ok:0,why:'“Entregar algo a alguém” + “a rainha” = à rainha.'},
+{q:'Complete: “A reunião começará ___ partir das nove.”',a:['à','há','a','as'],ok:2,why:'A expressão correta é “a partir de”. Não ocorre crase antes de verbo.'},
+{q:'Qual frase está correta?',a:['O rei fez referência à batalha.','O rei fez referência à ela.','O rei fez referência à lutar.','O rei fez referência à um cavaleiro.'],ok:0,why:'“Referência a” + “a batalha” = à batalha.'},
+{q:'Complete: “A princesa dedicou a vitória ___ sua mãe.”',a:['à','a','há','às'],ok:1,why:'Antes de pronome possessivo feminino usado sem artigo, a crase é facultativa; aqui “a sua mãe” está correto.'},
+{q:'Em “O cavaleiro ficou ___ espera do sinal”, complete.',a:['a','à','há','as'],ok:1,why:'“À espera de” é uma locução prepositiva feminina e leva crase.'},
+{q:'Assinale a opção em que NÃO deve haver crase.',a:['Voltei à fortaleza.','Fui à feira.','Entreguei o pergaminho à ela.','Chegamos às três horas.'],ok:2,why:'Não se usa crase antes de pronome pessoal: “a ela”.'},
+{q:'Complete: “O arqueiro disparou ___ distância.”',a:['a','à','há','as'],ok:1,why:'Na expressão “à distância”, quando determinada pelo contexto, usa-se crase.'},
+{q:'Qual alternativa está correta?',a:['A espada pertence à um guerreiro.','O portão abre às oito horas.','O rei começou à discursar.','Caminhamos à cavalo.'],ok:1,why:'Na indicação de horas determinadas, usa-se crase: às oito horas.'},
+{q:'Complete: “A comitiva foi ___ cavalo até o castelo.”',a:['à','a','há','às'],ok:1,why:'Não ocorre crase na expressão “a cavalo”.'},
+{q:'Complete: “O cavaleiro se dirigiu ___ fortaleza.”',a:['a','à','há','as'],ok:1,why:'“Dirigir-se a” + “a fortaleza” = à fortaleza.'},
+{q:'Qual frase usa a crase corretamente?',a:['Estamos dispostos à lutar.','A guarda ficou à postos.','A princesa voltou à sua terra.','O rei entregou o prêmio à ele.'],ok:2,why:'Antes de pronome possessivo feminino, a crase é facultativa. “À sua terra” está correto.'},
+{q:'Complete: “O duelo foi marcado para ___ uma hora da tarde.”',a:['a','à','há','as'],ok:1,why:'Na indicação de hora determinada, usa-se crase: à uma hora da tarde.'},
+{q:'Assinale a frase correta.',a:['O cavaleiro foi à pé.','A rainha deu ordens à guarda.','O mago começou à preparar o feitiço.','O soldado pediu ajuda à ele.'],ok:1,why:'“Dar ordens a” + “a guarda” = à guarda.'},
+{q:'Complete: “O mensageiro chegou ___ uma conclusão.”',a:['a','à','há','as'],ok:1,why:'A expressão “chegar a uma conclusão” normalmente não leva crase diante de artigo indefinido “uma”. A resposta correta seria “a uma”.',fix:true},
+{q:'Em qual opção a crase é obrigatória?',a:['Entreguei o escudo a ela.','Ficou cara a cara com o rei.','Chegou às dez horas.','Começou a treinar.'],ok:2,why:'Na indicação de horas determinadas, a crase é obrigatória: às dez horas.'}
+];
+// Remove/replace intentionally tricky prompt with unambiguous question
+questions[16]={q:'Complete: “O cavaleiro chegou ___ conclusão de que precisava treinar.”',a:['a','à','há','as'],ok:1,why:'“Chegar a” + “a conclusão” = à conclusão.'};
+let state={name:'Arthur',gender:'male',lives:3,boss:0,bossHP:2,hits:0,time:30,last:0,active:false,locked:false,used:[],question:null};
+function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
+function text(t,x,y,size,color='#f5e7c8',align='left'){ctx.fillStyle=color;ctx.font='bold '+size+'px monospace';ctx.textAlign=align;ctx.fillText(t,x,y)}
+function drawHero(x,y){ // pixel knight, gender-specific silhouette/helmet
+ const female=state.gender==='female';
+ // shadow
+ rect(x+4,y+43,28,5,'#171522');
+ // legs
+ rect(x+9,y+31,8,13,'#45445b');rect(x+21,y+31,8,13,'#45445b');
+ rect(x+7,y+41,11,5,'#c4a16c');rect(x+20,y+41,11,5,'#c4a16c');
+ // cape
+ rect(x+4,y+17,30,19,female?'#8b4564':'#9d3f3f');rect(x+1,y+25,6,13,female?'#8b4564':'#9d3f3f');
+ // armor/body
+ rect(x+7,y+15,25,20,'#aeb6c2');rect(x+10,y+18,19,13,'#677b91');
+ rect(x+17,y+18,4,13,'#e4c36f');
+ // arms
+ rect(x+2,y+19,7,15,'#d2ad83');rect(x+30,y+19,7,15,'#d2ad83');
+ // head/face
+ rect(x+10,y+2,19,17,'#dcae83');rect(x+8,y+0,23,8,'#c2c6d0');
+ rect(x+7,y+4,5,10,'#9ca5b5');rect(x+27,y+4,5,10,'#9ca5b5');
+ rect(x+14,y+10,3,3,'#30263a');rect(x+23,y+10,3,3,'#30263a');
+ if(female){rect(x+9,y-2,21,5,'#b94f6c');rect(x+5,y+4,5,13,'#b94f6c');rect(x+29,y+4,5,13,'#b94f6c');}
+ else{rect(x+9,y-3,21,5,'#727b8e');rect(x+16,y-6,7,5,'#d6b56d');}
+ // sword
+ rect(x+38,y+10,4,29,'#dce5e7');rect(x+34,y+24,12,4,'#c79b4c');rect(x+37,y+38,6,5,'#805338');
 }
-function loop(){if(!started)return;frame++;if(!paused){player.vx=(keys.ArrowRight?3.4:0)-(keys.ArrowLeft?3.4:0);player.x+=player.vx;player.x=Math.max(0,Math.min(world-player.w,player.x));player.vy+=.55;let oldY=player.y;player.y+=player.vy;player.on=false;for(let p of platforms){if(player.x+player.w>p.x&&player.x<p.x+p.w&&oldY+player.h<=p.y&&player.y+player.h>=p.y&&player.vy>=0){player.y=p.y-player.h;player.vy=0;player.on=true}}
-if(player.y>H+40)hurt();for(let h of hazards)if(hit(player,h))hurt();for(let s of shards)if(!s.taken&&Math.abs(player.x+13-s.x)<22&&Math.abs(player.y+15-s.y)<25){s.taken=true;score++;scoreEl.textContent=score+'/3'}
-if(player.inv>0)player.inv--;camera=Math.max(0,Math.min(world-W,player.x-W*.35));
-if(hit(player,gate)&&score>=3){openQuestion();qIndex++}else if(hit(player,gate)&&score<3){gate.y=290;}}
-draw();if(!paused)requestAnimationFrame(loop)}
+function drawBoss(x,y,index){const b=bosses[index],col=b.armor;
+ // shadow + cape
+ rect(x+4,y+61,62,7,'#171522');rect(x+12,y+27,48,34,b.color);rect(x+6,y+34,10,25,b.color);rect(x+55,y+34,10,25,b.color);
+ // legs and boots
+ rect(x+16,y+54,15,12,'#3e3444');rect(x+42,y+54,15,12,'#3e3444');rect(x+13,y+63,19,6,'#5a4140');rect(x+40,y+63,20,6,'#5a4140');
+ // torso armor
+ rect(x+13,y+25,49,32,col);rect(x+19,y+30,37,21,b.color);rect(x+34,y+30,7,22,'#e0bd6e');
+ // shoulder plates
+ rect(x+5,y+25,16,14,col);rect(x+55,y+25,16,14,col);
+ // head
+ rect(x+20,y+3,34,27,'#d4a77e');rect(x+17,y+0,40,12,col);rect(x+15,y+6,9,13,col);rect(x+51,y+6,9,13,col);
+ rect(x+25,y+17,6,4,'#241d2a');rect(x+44,y+17,6,4,'#241d2a');
+ // crown/horns differ
+ if(index===0){rect(x+28,y-7,6,9,'#b6b9c2');rect(x+42,y-7,6,9,'#b6b9c2');}
+ if(index===1){rect(x+16,y-8,6,13,'#a77bd0');rect(x+51,y-8,6,13,'#a77bd0');rect(x+31,y-8,12,7,'#e1c3fa');}
+ if(index===2){rect(x+23,y-12,7,14,'#e8c56e');rect(x+34,y-16,7,18,'#e8c56e');rect(x+45,y-12,7,14,'#e8c56e');}
+ // weapon
+ if(index===0){rect(x+72,y+9,5,49,'#d9e1e5');rect(x+65,y+27,19,5,'#d3ae60');rect(x+71,y+56,7,9,'#704c38');}
+ if(index===1){rect(x+76,y+2,5,62,'#805d9e');rect(x+69,y-5,19,12,'#d6b8f1');rect(x+72,y-2,13,6,'#f3dcff');}
+ if(index===2){rect(x+74,y+7,7,52,'#7a583e');rect(x+65,y+4,25,15,'#d4b15d');rect(x+66,y+4,7,15,'#e4d3a2');}
+}
+function drawScene(){
+ const g=ctx.createLinearGradient(0,0,0,450);g.addColorStop(0,'#252541');g.addColorStop(.65,'#65516a');g.addColorStop(1,'#32283b');ctx.fillStyle=g;ctx.fillRect(0,0,800,450);
+ // moon and stars
+ rect(670,52,52,52,'#e7d39a');rect(680,42,40,12,'#e7d39a');rect(680,104,40,8,'#e7d39a');rect(681,53,40,49,'#c8c2a1');
+ for(let i=0;i<45;i++){let x=(i*137+31)%800,y=(i*67+17)%185;rect(x,y,3,3,'#f4dca0')}
+ // castle silhouette
+ rect(0,190,800,145,'#302b42');rect(40,125,120,210,'#393148');rect(60,100,18,235,'#393148');rect(125,105,18,230,'#393148');rect(650,145,110,190,'#393148');rect(680,112,18,223,'#393148');rect(724,116,18,219,'#393148');
+ for(let x=0;x<800;x+=40){rect(x,330,40,80,'#51404c');rect(x+4,337,4,4,'#80636a')}
+ // battlements
+ for(let x=0;x<800;x+=32){rect(x,320,20,18,'#6e5661')}
+ // torches
+ rect(85,240,6,24,'#805339');rect(78,231,20,12,'#e89b4c');rect(82,225,12,12,'#ffe08a');
+ rect(710,245,6,24,'#805339');rect(703,236,20,12,'#e89b4c');rect(707,230,12,12,'#ffe08a');
+ // floor
+ rect(0,410,800,40,'#292337');rect(0,410,800,6,'#b08a5b');for(let x=0;x<800;x+=48){rect(x,428,26,3,'#665064')}
+ // battle props
+ rect(155,365,25,45,'#6d4c40');rect(147,358,41,10,'#b18b5d');rect(630,367,24,43,'#6d4c40');rect(622,360,40,10,'#b18b5d');
+ drawHero(220,352);
+ drawBoss(510,335,state.boss);
+ // labels above heads on canvas too
+ text(state.name||'Cavaleiro',236,340,10,'#f6e7c9','center');
+ text(bosses[state.boss].name,548,318,12,'#ffe0a0','center');
+}
+function updateHud(){
+ const b=bosses[state.boss];$('phase').textContent=(state.boss+1)+'/3';$('livesTop').textContent=state.lives;$('hitsTop').textContent=state.hits;
+ $('bossName').textContent=b.name;$('bossTitle').textContent=b.title;$('bossHP').textContent=state.bossHP+' / '+b.hp+' vidas';$('bossFill').style.width=(state.bossHP/b.hp*100)+'%';
+ $('hearts').textContent='♥ '.repeat(state.lives).trim()||'—';$('heroLabel').textContent=state.name;
+}
+function startGame(){
+ const n=$('heroName').value.trim();state.name=n||'Cavaleiro';state.gender=document.querySelector('input[name=gender]:checked').value;
+ state.lives=3;state.boss=0;state.bossHP=bosses[0].hp;state.hits=0;state.used=[];state.active=true;state.locked=false;
+ $('intro').style.display='none';$('result').style.display='none';$('battleUI').style.display='flex';updateHud();drawScene();askQuestion();
+}
+function nextQuestion(){
+ const unused=questions.map((q,i)=>i).filter(i=>!state.used.includes(i));
+ if(!unused.length)state.used=[];
+ const pool=unused.length?unused:questions.map((q,i)=>i);
+ const idx=pool[Math.floor(Math.random()*pool.length)];state.used.push(idx);state.question=questions[idx];
+ $('qText').textContent=state.question.q;$('qBoss').textContent='DUELO '+(state.boss+1)+' • '+bosses[state.boss].name;
+ $('qFeedback').textContent='';const list=$('answerList');list.innerHTML='';
+ state.question.a.forEach((answer,i)=>{const btn=document.createElement('button');btn.textContent=String.fromCharCode(65+i)+') '+answer;btn.onclick=()=>answerQuestion(i);list.appendChild(btn)});
+ state.time=30;state.last=performance.now();$('question').style.display='grid';updateTimer();
+}
+function askQuestion(){if(!state.active)return;nextQuestion()}
+function updateTimer(){const pct=Math.max(0,state.time/30*100);$('timerFill').style.width=pct+'%';$('timerText').textContent=Math.ceil(state.time);$('qTime').textContent=Math.ceil(state.time);$('timerFill').style.background=state.time<8?'#d75a55':'#e8c66d'}
+function answerQuestion(choice){
+ if(state.locked||!state.active)return;state.locked=true;clearInterval(state.clock);
+ const correct=choice===state.question.ok;
+ document.querySelectorAll('#answerList button').forEach((b,i)=>{b.disabled=true;if(i===state.question.ok)b.style.borderColor='#8eb77b';if(i===choice&&!correct)b.style.borderColor='#d75a55'});
+ if(correct){
+  state.bossHP--;state.hits++;$('qFeedback').textContent='ACERTOU! '+state.question.why;
+ }else{
+  state.lives--;$('qFeedback').textContent='ERROU! '+state.question.why+' Você perdeu 1 vida.';
+ }
+ updateHud();
+ setTimeout(()=>{
+  $('question').style.display='none';state.locked=false;
+  if(state.lives<=0){endGame(false);return}
+  if(state.bossHP<=0){
+   if(state.boss===2){endGame(true);return}
+   state.boss++;state.bossHP=bosses[state.boss].hp;updateHud();drawScene();
+   $('qFeedback').textContent='';
+   setTimeout(askQuestion,650);return;
+  }
+  askQuestion();
+ },1450);
+}
+function timeoutQuestion(){if(state.locked)return;state.locked=true;clearInterval(state.clock);state.lives--;updateHud();$('qFeedback').textContent='O TEMPO ACABOU! Você perdeu 1 vida. Respire e tente a próxima.';document.querySelectorAll('#answerList button').forEach(b=>b.disabled=true);setTimeout(()=>{$('question').style.display='none';state.locked=false;if(state.lives<=0)endGame(false);else askQuestion()},1300)}
+function tick(now){if(!state.active)return;if($('question').style.display==='grid'&&!state.locked){const dt=Math.min((now-state.last)/1000,.15);state.last=now;state.time-=dt;updateTimer();if(state.time<=0)timeoutQuestion()}requestAnimationFrame(tick)}
+function endGame(win){state.active=false;clearInterval(state.clock);$('question').style.display='none';$('battleUI').style.display='none';$('result').style.display='grid';$('resultTitle').textContent=win?'🏆 O REINO ESTÁ SALVO!':'☠ SUA JORNADA TERMINOU';$('resultText').textContent=win?state.name+', você derrotou os três guardiões e restaurou a crase no reino! Foram '+state.hits+' respostas corretas. Sua lenda será lembrada!':'Os guardiões venceram desta vez, '+state.name+'. Você acertou '+state.hits+' perguntas. Reúna coragem e tente novamente!';}
+$('startBtn').onclick=startGame;$('againBtn').onclick=()=>{state.active=false;$('result').style.display='none';$('intro').style.display='grid';$('battleUI').style.display='none';};
+drawScene();requestAnimationFrame(tick);
 </script></body></html>
