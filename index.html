@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Maldição do Acento Grave</title>
+<style>
+:root{--ink:#211b2b;--cream:#f6edda;--gold:#f4c66a;--red:#b64c43;--green:#8da875}
+*{box-sizing:border-box}body{margin:0;background:#171522;color:var(--cream);font-family:ui-monospace,Consolas,monospace;min-height:100vh;display:grid;place-items:center;padding:18px}
+.wrap{width:min(960px,100%)}header{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 0 12px}h1{font-size:clamp(20px,4vw,34px);margin:0;color:var(--gold);text-shadow:3px 3px #6e3d3c}.sub{font-size:12px;color:#bdb2c9;margin-top:6px}.hud{display:flex;gap:8px;flex-wrap:wrap;justify-content:end}.pill{background:#292438;border:1px solid #55465f;padding:8px 11px;border-radius:8px;font-size:12px}
+.stage{position:relative;border:4px solid #67506b;border-radius:12px;overflow:hidden;background:#27243b;box-shadow:0 14px 50px #0009}
+canvas{display:block;width:100%;image-rendering:pixelated;touch-action:none}
+.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#171522d9;padding:18px;text-align:center}.panel{max-width:520px;background:#292438;border:2px solid #92705f;border-radius:12px;padding:24px;box-shadow:7px 7px #110f19}.panel h2{color:var(--gold);margin:0 0 10px}.panel p{line-height:1.6;color:#e1d6c5}.btn{border:0;border-radius:8px;padding:12px 18px;background:var(--gold);color:#251d2b;font: bold 14px inherit;cursor:pointer;margin:5px}.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}.small{font-size:11px;color:#bdb2c9}
+#question{display:none;position:absolute;inset:0;background:#171522eF;place-items:center;padding:14px}.answers{display:grid;gap:8px;margin-top:16px}.answers button{background:#3a3249;border:1px solid #78617e;color:#fff;padding:12px;border-radius:7px;text-align:left;cursor:pointer;font:inherit}.answers button:hover{background:#55435f}.feedback{min-height:22px;color:var(--gold);font-size:13px;margin-top:12px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px}.touch{display:none;gap:8px}.touch button{width:48px;height:42px;background:#332b42;color:white;border:1px solid #766080;border-radius:8px;font-size:18px}
+@media(max-width:650px){header{align-items:start;flex-direction:column}.hud{justify-content:start}.touch{display:flex}.sub{font-size:10px}}
+</style>
+</head>
+<body><main class="wrap">
+<header><div><h1>A MALDIÇÃO DO ACENTO GRAVE</h1><div class="sub">Uma aventura de plataforma • Capítulo I: O Caminho da Crase</div></div><div class="hud"><div class="pill">✦ Fragmentos: <b id="score">0/3</b></div><div class="pill">♥ Vidas: <b id="lives">3</b></div><div class="pill">Nível: <b id="level">1</b></div></div></header>
+<div class="stage"><canvas id="game" width="800" height="440" aria-label="Jogo de plataforma"></canvas>
+<div class="overlay" id="intro"><div class="panel"><h2>O reino perdeu o acento...</h2><p>Uma névoa tomou conta do reino e apagou a crase de placas, mapas e antigos pergaminhos. Atravesse as ruínas, reúna os três fragmentos e prove que sabe quando usar o acento grave.</p><p><b>← →</b> mover &nbsp; <b>ESPAÇO</b> pular<br>Encontre os fragmentos dourados e alcance o portal.</p><button class="btn" id="start">COMEÇAR A AVENTURA</button><div class="small">Dica: você pode pular sobre os obstáculos. Não caia nas fendas!</div></div></div>
+<div id="question"><div class="panel"><h2>O selo da crase</h2><p id="qtext"></p><div class="answers" id="answers"></div><div class="feedback" id="feedback"></div></div></div>
+</div>
+<div class="controls"><div class="small">Teclas: ← → para andar • Espaço ou ↑ para pular</div><div class="touch"><button id="left">◀</button><button id="jump">▲</button><button id="right">▶</button></div></div>
+</main>
+<script>
+const c=document.getElementById('game'),ctx=c.getContext('2d');
+const scoreEl=document.getElementById('score'),livesEl=document.getElementById('lives'),levelEl=document.getElementById('level');
+const intro=document.getElementById('intro'),question=document.getElementById('question');
+const W=800,H=440,world=1800;
+let keys={},camera=0,score=0,lives=3,started=false,paused=false,won=false,frame=0;
+let player={x:55,y:300,w:26,h:34,vx:0,vy:0,on:false,inv:0};
+let platforms=[],shards=[],hazards=[],gate={x:1680,y:290,w:46,h:90};
+const qs=[
+{q:'Complete: “Vou ___ biblioteca depois da aula.”',a:['a biblioteca','à biblioteca','há biblioteca'],ok:1,why:'Quem vai, vai a algum lugar. “Biblioteca” pede artigo feminino: a + a = à.'},
+{q:'Em qual frase a crase está correta?',a:['Cheguei à escola cedo.','Entreguei o livro à ele.','Começou à chover.'],ok:0,why:'“Chegar a” + “a escola” = à escola. Não se usa crase antes de verbo ou pronome pessoal.'},
+{q:'Complete: “O evento começa ___ partir das oito.”',a:['a','à','há'],ok:0,why:'Antes de “partir” (verbo), não ocorre crase: a partir.'},
+{q:'Qual opção completa corretamente: “Ela se referiu ___ professora.”',a:['a','à','há'],ok:1,why:'“Referir-se a” + “a professora” = à professora.'}
+];
+let qIndex=0;
+function build(){platforms=[{x:0,y:380,w:260,h:60},{x:310,y:340,w:170,h:100},{x:525,y:300,w:155,h:140},{x:720,y:355,w:180,h:85},{x:945,y:315,w:160,h:125},{x:1145,y:270,w:170,h:170},{x:1360,y:340,w:170,h:100},{x:1570,y:380,w:230,h:60}];
+shards=[{x:180,y:330,taken:false},{x:590,y:250,taken:false},{x:1220,y:220,taken:false}];
+hazards=[{x:270,y:365,w:34,h:15},{x:690,y:365,w:26,h:15},{x:910,y:365,w:28,h:15},{x:1320,y:365,w:28,h:15},{x:1535,y:365,w:25,h:15}];}
+build();
+function resetPlayer(){player.x=55;player.y=300;player.vx=player.vy=0;player.inv=75}
+function start(){intro.style.display='none';started=true;requestAnimationFrame(loop)}
+document.getElementById('start').onclick=start;
+function key(e,down){if(['ArrowLeft','ArrowRight','ArrowUp','Space'].includes(e.code))e.preventDefault();keys[e.code]=down;if(down&&(e.code==='Space'||e.code==='ArrowUp')&&player.on&&!paused)player.vy=-11.5}
+addEventListener('keydown',e=>key(e,true));addEventListener('keyup',e=>key(e,false));
+[['left','ArrowLeft'],['right','ArrowRight'],['jump','Space']].forEach(([id,k])=>{let b=document.getElementById(id);b.onpointerdown=e=>{e.preventDefault();keys[k]=true;if(k==='Space'&&player.on)player.vy=-11.5};b.onpointerup=b.onpointerleave=()=>keys[k]=false});
+function hit(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
+function hurt(){if(player.inv>0)return;lives--;livesEl.textContent=lives;if(lives<=0){paused=true;showEnd(false)}else resetPlayer()}
+function openQuestion(){paused=true;let q=qs[qIndex%qs.length];document.getElementById('qtext').textContent=q.q;document.getElementById('feedback').textContent='';let box=document.getElementById('answers');box.innerHTML='';q.a.forEach((a,i)=>{let b=document.createElement('button');b.textContent='▸ '+a;b.onclick=()=>{if(i===q.ok){document.getElementById('feedback').textContent='✓ '+q.why;box.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(()=>{question.style.display='none';paused=false;won=true;showEnd(true)},1200)}else{document.getElementById('feedback').textContent='Ainda não! Pense na regência do verbo.';lives--;livesEl.textContent=lives;if(lives<=0)setTimeout(()=>{question.style.display='none';showEnd(false)},700)}};box.appendChild(b)});question.style.display='grid'}
+function showEnd(win){intro.style.display='grid';intro.querySelector('h2').textContent=win?'O selo foi restaurado!':'A névoa venceu...';intro.querySelector('p').textContent=win?'Você atravessou as ruínas e dominou o primeiro selo da crase. O reino ainda precisa de você!':'Suas vidas acabaram. Respire fundo e tente mais uma vez.';intro.querySelectorAll('p')[1].textContent=win?'Fragmentos reunidos: '+score+'/3':'Dica: use os saltos para passar pelos espinhos e não tenha pressa.';document.getElementById('start').textContent=win?'JOGAR NOVAMENTE':'TENTAR DE NOVO';document.getElementById('start').onclick=()=>{score=0;lives=3;qIndex=0;won=false;scoreEl.textContent='0/3';livesEl.textContent='3';build();resetPlayer();intro.style.display='none';paused=false;started=true;requestAnimationFrame(loop)}}
+function draw(){ctx.clearRect(0,0,W,H);let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#34314d');g.addColorStop(1,'#746078');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ctx.save();ctx.translate(-camera,0);
+// distant mountains
+for(let i=0;i<12;i++){let x=i*190;ctx.fillStyle=i%2?'#49445d':'#57506a';ctx.beginPath();ctx.moveTo(x,350);ctx.lineTo(x+90,130+(i%3)*35);ctx.lineTo(x+190,350);ctx.fill();}
+// stars / ruins
+for(let i=0;i<24;i++){let x=i*83+20;ctx.fillStyle='#e7c88a';ctx.fillRect(x,55+(i*31)%100,3,3)}
+platforms.forEach(p=>{ctx.fillStyle='#382e42';ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle='#9b806e';ctx.fillRect(p.x,p.y,p.w,8);ctx.fillStyle='#594658';for(let x=p.x+12;x<p.x+p.w;x+=35)ctx.fillRect(x,p.y+17,3,15)});
+hazards.forEach(h=>{ctx.fillStyle='#d66a55';ctx.beginPath();ctx.moveTo(h.x,h.y+h.h);ctx.lineTo(h.x+h.w/2,h.y-13);ctx.lineTo(h.x+h.w,h.y+h.h);ctx.fill()});
+shards.forEach(s=>{if(!s.taken){ctx.save();ctx.translate(s.x,s.y);ctx.rotate(Math.PI/4);ctx.fillStyle='#f8d477';ctx.fillRect(-8,-8,16,16);ctx.strokeStyle='#fff0b3';ctx.strokeRect(-8,-8,16,16);ctx.restore()}});
+ctx.fillStyle='#b98c68';ctx.fillRect(gate.x,gate.y,gate.w,gate.h);ctx.fillStyle='#f4cf78';ctx.fillRect(gate.x+9,gate.y+10,gate.w-18,gate.h-10);ctx.fillStyle='#3a2d49';ctx.fillRect(gate.x+16,gate.y+35,14,55);
+// hero
+if(player.inv%10<7){ctx.fillStyle='#272333';ctx.fillRect(player.x+4,player.y+7,18,27);ctx.fillStyle='#e5bd87';ctx.fillRect(player.x+5,player.y,17,15);ctx.fillStyle='#a94f49';ctx.fillRect(player.x+2,player.y+16,22,8);ctx.fillStyle='#d9c6a4';ctx.fillRect(player.x+3,player.y+29,8,5);ctx.fillRect(player.x+16,player.y+29,8,5)}
+ctx.restore();
+ctx.fillStyle='#fff0d2';ctx.font='12px monospace';ctx.fillText('RUÍNAS DO VELHO PORTUGUÊS',18,24);
+}
+function loop(){if(!started)return;frame++;if(!paused){player.vx=(keys.ArrowRight?3.4:0)-(keys.ArrowLeft?3.4:0);player.x+=player.vx;player.x=Math.max(0,Math.min(world-player.w,player.x));player.vy+=.55;let oldY=player.y;player.y+=player.vy;player.on=false;for(let p of platforms){if(player.x+player.w>p.x&&player.x<p.x+p.w&&oldY+player.h<=p.y&&player.y+player.h>=p.y&&player.vy>=0){player.y=p.y-player.h;player.vy=0;player.on=true}}
+if(player.y>H+40)hurt();for(let h of hazards)if(hit(player,h))hurt();for(let s of shards)if(!s.taken&&Math.abs(player.x+13-s.x)<22&&Math.abs(player.y+15-s.y)<25){s.taken=true;score++;scoreEl.textContent=score+'/3'}
+if(player.inv>0)player.inv--;camera=Math.max(0,Math.min(world-W,player.x-W*.35));
+if(hit(player,gate)&&score>=3){openQuestion();qIndex++}else if(hit(player,gate)&&score<3){gate.y=290;}}
+draw();if(!paused)requestAnimationFrame(loop)}
+</script></body></html>
